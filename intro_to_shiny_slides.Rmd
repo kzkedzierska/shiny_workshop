@@ -1,0 +1,115 @@
+---
+title: "Introduction to Shiny Apps"
+# subtitle: "⚔<br/>with xaringan"
+author: "Kasia Kedzierska"
+institute: "DPhil Candidate in Genomic Medicine and Statistics<br/>WHG, University of Oxford"
+date: "2022/04/22 (updated: `r Sys.Date()`)"
+output:
+  xaringan::moon_reader:
+    css: xaringan-themer.css
+    # yolo: true
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+```{r xaringan-themer, include=FALSE, warning=FALSE}
+library(xaringanthemer)
+style_mono_light(base_color = "#23395b")
+```
+
+```{r xaringanExtra, include=FALSE, echo=FALSE}
+xaringanExtra::use_fit_screen()
+xaringanExtra::use_clipboard()
+
+xaringanExtra::use_progress_bar(color = "#23395b", 
+                                location = "top", height = "10px")
+xaringanExtra::use_extra_styles(hover_code_line = TRUE, 
+                                mute_unhighlighted_code = FALSE)
+```
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+```
+
+
+class: inverse, center, middle
+
+# Why Shiny?
+
+---
+
+# Why Shiny?
+
+> Shiny is an R package that makes it easy to build interactive web apps straight from R.
+
+---
+
+# Simple example
+
+For interactivity.
+
+.pull-left.w40[
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE, fig.width=8, fig.height=5, dpi=96}
+library(tidyverse)
+library(patchwork)
+library(glue)
+library(palmerpenguins)
+
+xaxis <- "bill_length_mm"
+x_name <- "Bill length [mm]"
+yaxis <- "bill_depth_mm"
+y_name <- "Bill depth [mm]"
+colorby <- "species"
+
+plt_all <-
+  penguins %>%
+  ggplot(aes_string(x = xaxis, y = yaxis)) +
+  geom_point() +
+  labs(x = x_name,
+       y = y_name) +
+  theme_classic() 
+
+plt <-
+  penguins %>%
+  ggplot(aes_string(x = xaxis, y = yaxis, color = colorby)) +
+  geom_point() +
+  labs(x = x_name,
+       y = y_name,
+       color = "Species")+
+  theme_classic() +
+  theme(legend.position = "bottom") +
+  scale_color_viridis_d() 
+
+plt_all + plt +
+  plot_annotation(title = "Palmer Penguins size",
+                  subtitle = glue("{x_name} and {y_name} for {glue_collapse(sort(unique(penguins$species)), sep = ', ', last = ' and ')} Penguins."))
+```
+
+]
+
+.pull-right.w60[
+
+<iframe src="https://kzkedzierska.shinyapps.io/penguin_plot_/" width=1200 height=600></iframe>
+
+]
+
+---
+class: inverse, center, middle
+
+# Structure
+
+---
+
+
+
+---
+
+class: center, middle
+
+# Thanks!
+
+Slides created via the R package [**xaringan**](https://github.com/yihui/xaringan).
