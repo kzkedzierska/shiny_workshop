@@ -13,7 +13,7 @@ output:
     nature:
       highlightStyle: github
       highlightLines: true
-      highlightSpans: false
+      highlightSpans: true
       countIncrementalSlides: false
 ---
 
@@ -79,24 +79,45 @@ I need help, I am lost, not sure what am I supposed to do or `R` is throwing err
 
 ---
 
+# Outline
+
+* Shiny - introduction
+  * What is shiny?
+  * Gallery of shiny examples
+  * Resources
+* Anatomy of shiny apps
+  * server, ui
+  * inputs, outputs
+  * layout
+  * reactivity
+* Dashboards and more
+* Hands-on
+  * simple example
+  * more complex example
+  * structured example
+  * dashboard example
+  * app from scratch
+
+---
+
 class: inverse, center, middle
 
-# What is Shiny?
-
+# Shiny - introduction
 ---
 
 # What is Shiny?
 
 > Shiny is an R package that makes it easy to build interactive web apps straight from R.
 
-* allows to present the analysis interactively, taking user input into account
-* 
+In other words it allows us to build websites with results of our analyse without having to learn html or javascript. 
+
+
 
 ---
 
 ### Palmer penguins example - plot
 
-```{r, echo=FALSE, warning=FALSE, message=FALSE, fig.width=9, dev.args=list(bg = "transparent"), fig.height=5, dpi=96}
+```{r penguin_plot, echo=FALSE, warning=FALSE, message=FALSE, fig.width=9, dev.args=list(bg = "transparent"), fig.height=5, dpi=300}
 library(tidyverse)
 library(patchwork)
 library(glue)
@@ -144,23 +165,149 @@ patch & theme_minimal() & theme(legend.position = "bottom",
 <iframe id="scaled-frame" src="https://kzkedzierska.shinyapps.io/penguin_plot_/" width=900 height=480 frameBorder="0"></iframe>
 
 ---
+# Shiny Apps gallery
+
+<iframe src="https://shiny.rstudio.com/gallery/#demos" width=900 height=425 frameBorder="0"></iframe>
+
+.footnote[[shiny.rstudio.com/gallery/](https://shiny.rstudio.com/gallery/)]
+
+---
 class: inverse, center, middle
 
-
-# Structure
+# Anatomy of shiny
 ---
 
----
-### Reactive elements 
+# Anatomy of shiny
 
-We can add reactive elements. For example, we can add a plot that will add 
+Shiny requires:
+
+* user interface, the HTML webpage humans interact with
+* server, the powerhouse of an app
+
+.pull-left.w55[
+
+```{r, eval=FALSE}
+library(shiny) #<<
+
+ui <- fluidPage(
+  "Hello, world!"
+)
+
+server <- 
+  function(input, output, session) {
+}
+shinyApp(ui, server) 
+```
+]
+
+.pull-right.w40[
+.center[
+<img src="misc/hello_world.png" />
+]
+]
+
+---
+# Anatomy of shiny
+
+Shiny requires:
+
+* **user interface**, the HTML webpage humans interact with
+* server, the powerhouse of an app
+
+.pull-left.w55[
+
+```{r, eval=FALSE}
+library(shiny) 
+
+ui <- fluidPage( #<<
+  "Hello, world!" #<<
+) #<<
+
+server <- 
+  function(input, output, session) {
+}
+shinyApp(ui, server) 
+```
+]
+
+.pull-right.w40[
+.center[
+<img src="misc/hello_world.png" />
+]
+]
+
+---
+# Anatomy of shiny
+
+Shiny requires:
+
+* user interface, the HTML webpage humans interact with
+* **server**, the powerhouse of an app
+
+.pull-left.w55[
+
+```{r, eval=FALSE}
+library(shiny) 
+
+ui <- fluidPage(
+  "Hello, world!"
+)
+
+server <-  #<<
+  function(input, output, session) { #<<
+  } #<<
+shinyApp(ui, server) 
+```
+]
+
+.pull-right.w40[
+.center[
+<img src="misc/hello_world.png" />
+]
+]
+
+---
+
+# Anatomy of shiny
+
+Shiny requires:
+
+* user interface, the HTML webpage humans interact with
+* server, the powerhouse of an app
+
+.pull-left.w55[
+
+```{r, eval=FALSE}
+library(shiny)
+
+ui <- fluidPage(
+  "Hello, world!"
+)
+
+server <- 
+  function(input, output, session) {
+}
+shinyApp(ui, server) #<<
+```
+]
+
+.pull-right.w40[
+.center[
+<img src="misc/hello_world.png" />
+]
+]
+
+---
+# Reactive elements 
+
+The key functionality of Shiny are reactive elements we can add to our apps. For example, remember the plot from previous simple example? We were able to add regression line after selecting the proper option. That is because the app **reacted** to our (= user) input.
 
 .center[
 <img src="misc/server_ui.svg" />
 ]
 
 ---
-### Reactive elements 
+# Reactive elements 
 
 .pull-left.w60[
 .center[
@@ -192,7 +339,7 @@ server <- function(input, output) {
 .center[
 And in the UI this is what user will see depending chosen option: 
 
-```{r, echo=FALSE, message=FALSE, error=FALSE, warning=FALSE}
+```{r reatcive_gif, echo=FALSE, message=FALSE, error=FALSE, warning=FALSE}
 save_to_dir <- "misc/gif_smooth/"
 
 library(ggthemes)

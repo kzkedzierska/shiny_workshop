@@ -20,10 +20,18 @@
     <textarea id="source">
 class: center, middle, inverse, title-slide
 
+.title[
 # Introduction to Shiny Apps
+]
+.author[
 ### Kasia Kedzierska
+]
+.institute[
 ### DPhil Candidate in Genomic Medicine and Statistics<br/>WHG, University of Oxford
+]
+.date[
 ### 2022/04/22 (updated: 2022-04-25)
+]
 
 ---
 
@@ -77,24 +85,41 @@ I need help, I am lost, not sure what am I supposed to do or `R` is throwing err
 
 ---
 
+# Outline
+
+* Shiny - introduction
+  * What is shiny?
+  * Gallery of shiny examples
+  * Resources
+* Anatomy of shiny apps
+  * server, ui
+  * inputs, outputs
+  * layout
+  * reactivity
+* Dashboards and more
+* Hands-on
+
+
+---
+
 class: inverse, center, middle
 
-# What is Shiny?
-
+# Shiny - introduction
 ---
 
 # What is Shiny?
 
 &gt; Shiny is an R package that makes it easy to build interactive web apps straight from R.
 
-* allows to present the analysis interactively, taking user input into account
-* 
+In other words it allows us to build websites with results of our analyse without having to learn html or javascript. 
+
+
 
 ---
 
 ### Palmer penguins example - plot
 
-![](intro_to_shiny_slides_files/figure-html/unnamed-chunk-1-1.png)&lt;!-- --&gt;
+![](intro_to_shiny_slides_files/figure-html/penguin_plot-1.png)&lt;!-- --&gt;
 
 
 ---
@@ -104,23 +129,153 @@ class: inverse, center, middle
 &lt;iframe id="scaled-frame" src="https://kzkedzierska.shinyapps.io/penguin_plot_/" width=900 height=480 frameBorder="0"&gt;&lt;/iframe&gt;
 
 ---
+# Shiny Apps gallery
+
+&lt;iframe src="https://shiny.rstudio.com/gallery/#demos" width=900 height=425 frameBorder="0"&gt;&lt;/iframe&gt;
+
+.footnote[[shiny.rstudio.com/gallery/](https://shiny.rstudio.com/gallery/)]
+
+---
 class: inverse, center, middle
 
-
-# Structure
+# Anatomy of shiny
 ---
 
----
-### Reactive elements 
+# Anatomy of shiny
 
-We can add reactive elements. For example, we can add a plot that will add 
+Shiny requires:
+
+* user interface, the HTML webpage humans interact with
+* server, the powerhouse of an app
+
+.pull-left.w55[
+
+
+```r
+*library(shiny)
+
+ui &lt;- fluidPage(
+  "Hello, world!"
+)
+
+server &lt;- 
+  function(input, output, session) {
+}
+shinyApp(ui, server) 
+```
+]
+
+.pull-right.w40[
+.center[
+&lt;img src="misc/hello_world.png" /&gt;
+]
+]
+
+---
+# Anatomy of shiny
+
+Shiny requires:
+
+* **user interface**, the HTML webpage humans interact with
+* server, the powerhouse of an app
+
+.pull-left.w55[
+
+
+```r
+library(shiny) 
+
+*ui &lt;- fluidPage(
+* "Hello, world!"
+*) 
+
+server &lt;- 
+  function(input, output, session) {
+}
+shinyApp(ui, server) 
+```
+]
+
+.pull-right.w40[
+.center[
+&lt;img src="misc/hello_world.png" /&gt;
+]
+]
+
+---
+# Anatomy of shiny
+
+Shiny requires:
+
+* user interface, the HTML webpage humans interact with
+* **server**, the powerhouse of an app
+
+.pull-left.w55[
+
+
+```r
+library(shiny) 
+
+ui &lt;- fluidPage(
+  "Hello, world!"
+)
+
+*server &lt;-
+* function(input, output, session) {
+* }
+shinyApp(ui, server) 
+```
+]
+
+.pull-right.w40[
+.center[
+&lt;img src="misc/hello_world.png" /&gt;
+]
+]
+
+---
+
+# Anatomy of shiny
+
+Shiny requires:
+
+* user interface, the HTML webpage humans interact with
+* server, the powerhouse of an app
+
+.pull-left.w55[
+
+
+```r
+library(shiny)
+
+ui &lt;- fluidPage(
+  "Hello, world!"
+)
+
+server &lt;- 
+  function(input, output, session) {
+}
+*shinyApp(ui, server)
+```
+]
+
+.pull-right.w40[
+.center[
+&lt;img src="misc/hello_world.png" /&gt;
+]
+]
+
+---
+# Reactive elements 
+
+The key functionality of Shiny are reactive elements we can add to our apps. For example, remember the plot from previous simple example? We were able to add regression line after selecting the proper option. That is because the app **reacted** to our (= user) input.
 
 .center[
 &lt;img src="misc/server_ui.svg" /&gt;
 ]
 
 ---
-### Reactive elements 
+# Reactive elements 
 
 .pull-left.w60[
 .center[
@@ -153,7 +308,7 @@ server &lt;- function(input, output) {
 .center[
 And in the UI this is what user will see depending chosen option: 
 
-![](intro_to_shiny_slides_files/figure-html/unnamed-chunk-3-1.gif)&lt;!-- --&gt;
+![](intro_to_shiny_slides_files/figure-html/reatcive_gif-1.gif)&lt;!-- --&gt;
 
 ]]
 
@@ -206,7 +361,7 @@ Early Bird: &lt;b&gt;11.07&lt;/b&gt; &lt;/td&gt;
 <script>var slideshow = remark.create({
 "highlightStyle": "github",
 "highlightLines": true,
-"highlightSpans": false,
+"highlightSpans": true,
 "countIncrementalSlides": false
 });
 if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
@@ -248,6 +403,19 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
     deleted = true;
   });
 })();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
 (function() {
   "use strict"
   // Replace <script> tags in slides area to make them executable

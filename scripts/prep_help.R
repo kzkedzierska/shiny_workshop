@@ -38,7 +38,8 @@ for (pkg in needed_packages) {
 
 # additional packages from github
 needed_packages_remotes <- 
-  c("jokergoo/ComplexHeatmap")
+  c("jokergoo/ComplexHeatmap",
+    'rstudio/flexdashboard')
 
 for (pkg in needed_packages_remotes) {
   pkg_name <- basename(pkg)
