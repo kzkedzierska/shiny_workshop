@@ -6,12 +6,14 @@ institute: "DPhil Candidate in Genomic Medicine and Statistics<br/>WHG, Universi
 date: "2022/04/22 (updated: `r Sys.Date()`)"
 output:
   xaringan::moon_reader:
+    # css: ["xaringan-themer.css", "custom.css"]
     css: xaringan-themer.css
     # yolo: true
     lib_dir: libs
     nature:
       highlightStyle: github
       highlightLines: true
+      highlightSpans: true
       countIncrementalSlides: false
 ---
 
@@ -79,7 +81,7 @@ plt <-
   geom_point() +
   labs(x = x_name,
        y = y_name,
-       color = "Species")+
+       color = "Species") +
   theme_classic() +
   theme(legend.position = "bottom") +
   scale_color_viridis_d() 
@@ -101,8 +103,90 @@ plt_all + plt +
 class: inverse, center, middle
 
 # Structure
+---
+
 
 ---
+.center[
+<img src="misc/server_ui.svg" />
+]
+
+.pull-left[
+.center[
+Inside the server block we will have a code like that:  
+]
+  
+
+```{r, eval=FALSE}
+server <- function(input, output) {
+  ...
+  output$plt <- 
+    renderPlot({
+      penguins %>%
+        ggplot(aes(x = bill_length_mm, y = bill_depth_mm)) +
+        geom_point() + 
+        { if(`input$smooth == "yes"`) {
+          geom_smooth(se = FALSE, 
+                      method = "lm", 
+                      formula = "y ~ x")
+        }}
+    })
+  ...
+}
+```
+
+] 
+
+.pull-right[
+.center[
+And in the UI this is what user will see depending chosen option: 
+
+```{r, echo=FALSE, message=FALSE, error=FALSE, warning=FALSE}
+save_to_dir <- "misc/gif_smooth/"
+
+library(ggthemes)
+if (length(list.files(save_to_dir, pattern = ".png")) < 2) {
+  plt_penguin_gif1 <-
+    penguins %>%
+    ggplot(aes(x = bill_length_mm, y = bill_depth_mm)) +
+    geom_point() +
+    labs(x = "Bill length [mm]",
+         y = "Bill depth [mm]",
+         title = "Smooth: no") +
+    theme_economist()
+  
+  ggsave(plot = plt_penguin_gif1, 
+         filename = "plt_penguin_gif1.png", path = save_to_dir, 
+         width = 4, height = 4, dpi = 96,
+         bg = "transparent")
+  
+  plt_penguin_gif2 <-
+    plt_penguin_gif1 +
+    geom_smooth(se = FALSE, method = "lm", formula = "y ~ x") +
+    labs(title = "Smooth: yes")
+  
+  ggsave(plot = plt_penguin_gif2, 
+         filename = "plt_penguin_gif2.png", path = save_to_dir,  
+         width = 4, height = 4, dpi = 96,
+         bg = "transparent")
+}
+
+library(magick)
+imgs <- list.files(save_to_dir, full.names = TRUE)
+img_list <- lapply(imgs, image_read)
+
+## join the images together
+img_joined <- image_join(img_list)
+
+## animate at 2 frames per second
+img_animated <- image_animate(img_joined, fps = 1)
+
+## view animated image
+img_animated
+```
+
+]]
+
 
 
 

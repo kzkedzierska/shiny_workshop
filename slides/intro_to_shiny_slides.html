@@ -65,8 +65,49 @@ For interactivity.
 class: inverse, center, middle
 
 # Structure
+---
+
 
 ---
+.center[
+&lt;img src="misc/server_ui.svg" /&gt;
+]
+
+.pull-left[
+.center[
+Inside the server block we will have a code like that:  
+]
+  
+
+
+```r
+server &lt;- function(input, output) {
+  ...
+  output$plt &lt;- 
+    renderPlot({
+      penguins %&gt;%
+        ggplot(aes(x = bill_length_mm, y = bill_depth_mm)) +
+        geom_point() + 
+        { if(`input$smooth == "yes"`) {
+          geom_smooth(se = FALSE, 
+                      method = "lm", 
+                      formula = "y ~ x")
+        }}
+    })
+  ...
+}
+```
+
+] 
+
+.pull-right[
+.center[
+And in the UI this is what user will see depending chosen option: 
+
+![](intro_to_shiny_slides_files/figure-html/unnamed-chunk-3-1.gif)&lt;!-- --&gt;
+
+]]
+
 
 
 
@@ -83,6 +124,7 @@ Slides created via the R package [**xaringan**](https://github.com/yihui/xaringa
 <script>var slideshow = remark.create({
 "highlightStyle": "github",
 "highlightLines": true,
+"highlightSpans": true,
 "countIncrementalSlides": false
 });
 if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {

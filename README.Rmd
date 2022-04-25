@@ -4,6 +4,23 @@ output: github_document
 ---
 
 ```{r setup, include=FALSE}
+# save the built-in output hook
+hook_output <- knitr::knit_hooks$get("output")
+
+# set a new output hook to truncate text output
+knitr::knit_hooks$set(output = function(x, options) {
+  if (!is.null(n <- options$out.lines)) {
+    x <- xfun::split_lines(x)
+    if (length(x) > n) {
+      # truncate the output
+      x <- c(head(x, n-1), 
+             "....", 
+             tail(x, 2))
+    }
+    x <- paste(x, collapse = "\n")
+  }
+  hook_output(x, options)
+})
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
@@ -19,7 +36,7 @@ If the script executes properly the following messages should be printed.
 source("scripts/prep_help.R")
 ```
 
-```{r}
+```{r, out.lines = 4}
 source("scripts/prep_help.R")
 ```
 

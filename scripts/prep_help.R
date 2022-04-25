@@ -53,11 +53,11 @@ for (pkg in needed_packages_remotes) {
   }
   library(pkg_name, character.only = TRUE)
   if(pkg_name %in% loadedNamespaces()) {
-    print(paste("Successful!", pkg, "loaded."))
+    print(paste("Successful!", pkg_name, "loaded."))
   } else {
     error_count <- error_count + 1
-    msg <- paste("ERROR: Unsuccessful!", pkg, 
-                 "not loaded. Check error msg.")
+    msg <- paste("ERROR: Unsuccessful!", pkg_name, "installed from:", pkg, 
+                 "not loaded. Check error msg for.")
     print(msg)
   }
 }

@@ -20,15 +20,7 @@ source("scripts/prep_help.R")
     ## [1] "Successful! remotes loaded."
     ## [1] "Successful! shiny loaded."
     ## [1] "Successful! shinydashboard loaded."
-    ## [1] "Successful! flexdashboard loaded."
-    ## [1] "Successful! tidyverse loaded."
-    ## [1] "Successful! patchwork loaded."
-    ## [1] "Successful! ggsci loaded."
-    ## [1] "Successful! glue loaded."
-    ## [1] "Successful! palmerpenguins loaded."
-    ## [1] "Successful! ggplot2movies loaded."
-    ## [1] "Successful! plotly loaded."
-    ## [1] "Successful! jokergoo/ComplexHeatmap loaded."
+    ....
     ## SUCCESS: Fantastic! All packages installed and ready.
 
 *Note:* The repo might change since last time you clone it, so please
