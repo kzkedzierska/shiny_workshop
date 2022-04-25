@@ -7,7 +7,7 @@ date: "2022/04/22 (updated: `r Sys.Date()`)"
 output:
   xaringan::moon_reader:
     # css: ["xaringan-themer.css", "custom.css"]
-    css: xaringan-themer.css
+    css: ["xaringan-themer.css", "width.css", "misc.css"]
     # yolo: true
     lib_dir: libs
     nature:
@@ -36,8 +36,18 @@ xaringanExtra::use_extra_styles(hover_code_line = TRUE,
 options(htmltools.dir.version = FALSE)
 ```
 
+# About me
+
+Hello! 
+
+I'm a 4th year (ouch!) PhD student in Genomic Medicine at the Wellcome Centre for Human Genetics.
+
+I use R a lot - for data viz, data analysis, to create this slideshow, for my personal website and to play with Generative aRt. It is safe to say I like R a bit.
+
+I also like questions, so please go ahead and ask me any throughout this workshop. If at any point you feel lost let me know. I also brought help with me - so there's twice as many of us to help you out. :)
 
 
+---
 
 # Before we start
 
@@ -53,13 +63,29 @@ options(htmltools.dir.version = FALSE)
 
 ---
 
-class: inverse, center, middle
+# Asking for help
 
-# Why Shiny?
+For this workshop we will use green, orange and red sticky notes. The way this works is at various points, when you will get to do your exercises I will ask you to put one of the stickers on your laptop.
+
+#### <span style="background-color: #84A59D">green</span> 
+I'm doing well! Keeping up, I am working on the example, know what to do.  
+
+#### <span style="background-color: #F6BD60">orange</span>
+I am a little bit lost, not sure exactly do, `R` speaks warnings to me.  
+
+#### <span style="background-color: #B20D30">red</span>
+
+I need help, I am lost, not sure what am I supposed to do or `R` is throwing errors at me.
 
 ---
 
-# Why Shiny?
+class: inverse, center, middle
+
+# What is Shiny?
+
+---
+
+# What is Shiny?
 
 > Shiny is an R package that makes it easy to build interactive web apps straight from R.
 
@@ -68,17 +94,14 @@ class: inverse, center, middle
 
 ---
 
-# Simple example
+### Palmer penguins example - plot
 
-For interactivity.
-
-.pull-left.w40[
-
-```{r, echo=FALSE, warning=FALSE, message=FALSE, fig.width=8, fig.height=5, dpi=96}
+```{r, echo=FALSE, warning=FALSE, message=FALSE, fig.width=9, dev.args=list(bg = "transparent"), fig.height=5, dpi=96}
 library(tidyverse)
 library(patchwork)
 library(glue)
 library(palmerpenguins)
+library(ggthemes)
 
 xaxis <- "bill_length_mm"
 x_name <- "Bill length [mm]"
@@ -91,8 +114,7 @@ plt_all <-
   ggplot(aes_string(x = xaxis, y = yaxis)) +
   geom_point() +
   labs(x = x_name,
-       y = y_name) +
-  theme_classic() 
+       y = y_name) 
 
 plt <-
   penguins %>%
@@ -101,37 +123,46 @@ plt <-
   labs(x = x_name,
        y = y_name,
        color = "Species") +
-  theme_classic() +
-  theme(legend.position = "bottom") +
-  scale_color_viridis_d() 
+  scale_color_economist() 
 
-plt_all + plt +
+patch <- 
+  plt_all + 
+  plt +
   plot_annotation(title = "Palmer Penguins size",
-                  subtitle = glue("{x_name} and {y_name} for {glue_collapse(sort(unique(penguins$species)), sep = ', ', last = ' and ')} Penguins."))
+                  subtitle = glue(
+                    "{x_name} and {y_name} for {glue_collapse(sort(unique(penguins$species)), sep = ', ', last = ' and ')} Penguins.")) 
+
+patch & theme_minimal() & theme(legend.position = "bottom", 
+                                panel.grid.major = element_line(color = "white"))
 ```
 
-]
 
-.pull-right.w60[
+---
 
-<iframe src="https://kzkedzierska.shinyapps.io/penguin_plot_/" width=1200 height=600></iframe>
+### Palmer penguins example - app
 
-]
+<iframe id="scaled-frame" src="https://kzkedzierska.shinyapps.io/penguin_plot_/" width=900 height=480 frameBorder="0"></iframe>
 
 ---
 class: inverse, center, middle
 
+
 # Structure
 ---
 
-
 ---
-## Interactivity 
+### Reactive elements 
+
+We can add reactive elements. For example, we can add a plot that will add 
+
 .center[
 <img src="misc/server_ui.svg" />
 ]
 
-.pull-left[
+---
+### Reactive elements 
+
+.pull-left.w60[
 .center[
 Inside the server block we will have a code like that:  
 ]
@@ -142,7 +173,8 @@ server <- function(input, output) {
   output$plt <- 
     renderPlot({
       penguins %>%
-        ggplot(aes(x = bill_length_mm, y = bill_depth_mm)) +
+        ggplot(aes(x = bill_length_mm, 
+                   y = bill_depth_mm)) +
         geom_point() + 
         { if(input$smooth == "yes") { 
           geom_smooth(se = FALSE, 
@@ -156,7 +188,7 @@ server <- function(input, output) {
 
 ] 
 
-.pull-right[
+.pull-right.w35[
 .center[
 And in the UI this is what user will see depending chosen option: 
 
@@ -211,8 +243,41 @@ img_animated
 
 ---
 
-class: center, middle
+### Thanks for following!
 
-# Thanks!
+It's now time for questions and chat :)
 
-Slides created via the R package [**xaringan**](https://github.com/yihui/xaringan).
+.center[**Upcoming [NGSchool](https://ngschool.eu/) Society Events**]
+
+<table>
+<tr>
+<td><img src="misc/ngsymposium-logo-2022.svg" /> </td>
+<td><img src="misc/ngschool-logo-2022.svg" /></td>
+</tr>
+<tr>
+<td>23 - 24.09.2022 </td>
+<td>15 - 23.09.2022</td>
+</tr>
+<tr>
+<td>Warsaw, Poland</td>
+<td>Jablonna near Warsaw, Poland</td>
+</tr>
+<tr>
+<td>Abstracts deadline: <b>23.05</b> <br>
+Registration deadline: 20.08 <br>
+Early Bird: <b>11.07</b> </td>
+<td>Registration deadline: <b>30.05</b> <br> Fee: 200 EUR (includes accom. and board!)</td>
+</tr>
+<tr>
+<td><a href=https://ngschool.eu/ngsymposium2022/>ngschool.eu/ngsymposium2022/</a></td>
+<td><a href=https://ngschool.eu/ngschool2022/>ngschool.eu/ngschool2022/</a></td>
+<tr>
+</table>
+
+
+ 
+
+
+
+
+.footnote[Slides created via the R package [**xaringan**](https://github.com/yihui/xaringan).]

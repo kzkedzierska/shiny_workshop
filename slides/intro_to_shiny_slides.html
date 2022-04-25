@@ -13,6 +13,8 @@
     <script src="libs/xaringanExtra-progressBar/progress-bar.js"></script>
     <link href="libs/xaringanExtra-extra-styles/xaringanExtra-extra-styles.css" rel="stylesheet" />
     <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
+    <link rel="stylesheet" href="width.css" type="text/css" />
+    <link rel="stylesheet" href="misc.css" type="text/css" />
   </head>
   <body>
     <textarea id="source">
@@ -32,49 +34,95 @@ class: center, middle, inverse, title-slide
 
 
 
+# About me
 
-class: inverse, center, middle
+Hello! 
 
-# Why Shiny?
+I'm a 4th year (ouch!) PhD student in Genomic Medicine at the Wellcome Centre for Human Genetics.
+
+I use R a lot - for data viz, data analysis, to create this slideshow, for my personal website and to play with Generative aRt. It is safe to say I like R a bit.
+
+I also like questions, so please go ahead and ask me any throughout this workshop. If at any point you feel lost let me know. I also brought help with me - so there's twice as many of us to help you out. :)
+
 
 ---
 
-# Why Shiny?
+# Before we start
+
+* **This workshop is very much hands on**. Please make sure you cloned the repository and it is up to date. We will go through a presentation and run/edit examples and create our own applications all throughout. 
+
+--
+
+* **This is an Introduction to Shiny**. The goal of this workshop is to give you and idea of what `shiny` is, and help you break the ice and create your first Hello world! applications and dashboards.
+
+--
+
+* **Check out the other materials**. I list a lot of other resources - R community is brilliant in providing support in learning new skills and there is plenty of 
+
+---
+
+# Asking for help
+
+For this workshop we will use green, orange and red sticky notes. The way this works is at various points, when you will get to do your exercises I will ask you to put one of the stickers on your laptop.
+
+#### &lt;span style="background-color: #84A59D"&gt;green&lt;/span&gt; 
+I'm doing well! Keeping up, I am working on the example, know what to do.  
+
+#### &lt;span style="background-color: #F6BD60"&gt;orange&lt;/span&gt;
+I am a little bit lost, not sure exactly do, `R` speaks warnings to me.  
+
+#### &lt;span style="background-color: #B20D30"&gt;red&lt;/span&gt;
+
+I need help, I am lost, not sure what am I supposed to do or `R` is throwing errors at me.
+
+---
+
+class: inverse, center, middle
+
+# What is Shiny?
+
+---
+
+# What is Shiny?
 
 &gt; Shiny is an R package that makes it easy to build interactive web apps straight from R.
 
+* allows to present the analysis interactively, taking user input into account
+* 
+
 ---
 
-# Simple example
-
-For interactivity.
-
-.pull-left.w40[
+### Palmer penguins example - plot
 
 ![](intro_to_shiny_slides_files/figure-html/unnamed-chunk-1-1.png)&lt;!-- --&gt;
 
-]
 
-.pull-right.w60[
+---
 
-&lt;iframe src="https://kzkedzierska.shinyapps.io/penguin_plot_/" width=1200 height=600&gt;&lt;/iframe&gt;
+### Palmer penguins example - app
 
-]
+&lt;iframe id="scaled-frame" src="https://kzkedzierska.shinyapps.io/penguin_plot_/" width=900 height=480 frameBorder="0"&gt;&lt;/iframe&gt;
 
 ---
 class: inverse, center, middle
+
 
 # Structure
 ---
 
-
 ---
-## Interactivity 
+### Reactive elements 
+
+We can add reactive elements. For example, we can add a plot that will add 
+
 .center[
 &lt;img src="misc/server_ui.svg" /&gt;
 ]
 
-.pull-left[
+---
+### Reactive elements 
+
+.pull-left.w60[
 .center[
 Inside the server block we will have a code like that:  
 ]
@@ -86,7 +134,8 @@ server &lt;- function(input, output) {
   output$plt &lt;- 
     renderPlot({
       penguins %&gt;%
-        ggplot(aes(x = bill_length_mm, y = bill_depth_mm)) +
+        ggplot(aes(x = bill_length_mm, 
+                   y = bill_depth_mm)) +
         geom_point() + 
         { if(input$smooth == "yes") { 
           geom_smooth(se = FALSE, 
@@ -100,7 +149,7 @@ server &lt;- function(input, output) {
 
 ] 
 
-.pull-right[
+.pull-right.w35[
 .center[
 And in the UI this is what user will see depending chosen option: 
 
@@ -113,11 +162,44 @@ And in the UI this is what user will see depending chosen option:
 
 ---
 
-class: center, middle
+### Thanks for following!
 
-# Thanks!
+It's now time for questions and chat :)
 
-Slides created via the R package [**xaringan**](https://github.com/yihui/xaringan).
+.center[**Upcoming [NGSchool](https://ngschool.eu/) Society Events**]
+
+&lt;table&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;img src="misc/ngsymposium-logo-2022.svg" /&gt; &lt;/td&gt;
+&lt;td&gt;&lt;img src="misc/ngschool-logo-2022.svg" /&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;23 - 24.09.2022 &lt;/td&gt;
+&lt;td&gt;15 - 23.09.2022&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Warsaw, Poland&lt;/td&gt;
+&lt;td&gt;Jablonna near Warsaw, Poland&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Abstracts deadline: &lt;b&gt;23.05&lt;/b&gt; &lt;br&gt;
+Registration deadline: 20.08 &lt;br&gt;
+Early Bird: &lt;b&gt;11.07&lt;/b&gt; &lt;/td&gt;
+&lt;td&gt;Registration deadline: &lt;b&gt;30.05&lt;/b&gt; &lt;br&gt; Fee: 200 EUR (includes accom. and board!)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=https://ngschool.eu/ngsymposium2022/&gt;ngschool.eu/ngsymposium2022/&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;&lt;a href=https://ngschool.eu/ngschool2022/&gt;ngschool.eu/ngschool2022/&lt;/a&gt;&lt;/td&gt;
+&lt;tr&gt;
+&lt;/table&gt;
+
+
+ 
+
+
+
+
+.footnote[Slides created via the R package [**xaringan**](https://github.com/yihui/xaringan).]
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
