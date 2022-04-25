@@ -1,5 +1,6 @@
 # few lines to help make sure we do have everything we need
 `%not in%` <- Negate(`%in%`)
+error_count <- 0 
 
 needed_packages <-
   c("remotes", "shiny", "shinydashboard", "flexdashboard", 
@@ -20,14 +21,19 @@ for (pkg in needed_packages) {
     if ((pkg %not in% rownames(installed.packages()))) {
       msg <- paste("ERROR: Unsuccessful!", pkg, "not installed!",
                    "Check the log and try installing the package manually.")
+      error_count <- error_count + 1
       stop(msg)
     } 
   }
   library(pkg, character.only = TRUE)
-  ifelse(pkg %in% loadedNamespaces(), 
-         print(paste("Successful!", pkg, "loaded.")),
-         print(paste("ERROR: Unsuccessful!", pkg, 
-                     "not loaded. Check error msg.")))
+  if(pkg %in% loadedNamespaces()) {
+    print(paste("Successful!", pkg, "loaded."))
+  } else {
+    error_count <- error_count + 1
+    msg <- paste("ERROR: Unsuccessful!", pkg, 
+                 "not loaded. Check error msg.")
+    print(msg)
+  }
 }
 
 # additional packages from github
@@ -46,8 +52,16 @@ for (pkg in needed_packages_remotes) {
     } 
   }
   library(pkg_name, character.only = TRUE)
-  ifelse(pkg_name %in% loadedNamespaces(), 
-         print(paste("Successful!", pkg, "loaded.")),
-         print(paste("ERROR: Unsuccessful!", pkg, 
-                     "not loaded. Check error msg.")))
+  if(pkg_name %in% loadedNamespaces()) {
+    print(paste("Successful!", pkg, "loaded."))
+  } else {
+    error_count <- error_count + 1
+    msg <- paste("ERROR: Unsuccessful!", pkg, 
+                 "not loaded. Check error msg.")
+    print(msg)
+  }
+}
+
+if (error_count == 0) {
+  print(glue("SUCCESS: Fantastic! All packages installed and ready."))
 }
