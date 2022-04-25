@@ -13,7 +13,7 @@ output:
     nature:
       highlightStyle: github
       highlightLines: true
-      highlightSpans: true
+      highlightSpans: false
       countIncrementalSlides: false
 ---
 
@@ -37,6 +37,22 @@ options(htmltools.dir.version = FALSE)
 ```
 
 
+
+
+# Before we start
+
+* **This workshop is very much hands on**. Please make sure you cloned the repository and it is up to date. We will go through a presentation and run/edit examples and create our own applications all throughout. 
+
+--
+
+* **This is an Introduction to Shiny**. The goal of this workshop is to give you and idea of what `shiny` is, and help you break the ice and create your first Hello world! applications and dashboards.
+
+--
+
+* **Check out the other materials**. I list a lot of other resources - R community is brilliant in providing support in learning new skills and there is plenty of 
+
+---
+
 class: inverse, center, middle
 
 # Why Shiny?
@@ -46,6 +62,9 @@ class: inverse, center, middle
 # Why Shiny?
 
 > Shiny is an R package that makes it easy to build interactive web apps straight from R.
+
+* allows to present the analysis interactively, taking user input into account
+* 
 
 ---
 
@@ -107,6 +126,7 @@ class: inverse, center, middle
 
 
 ---
+## Interactivity 
 .center[
 <img src="misc/server_ui.svg" />
 ]
@@ -116,7 +136,6 @@ class: inverse, center, middle
 Inside the server block we will have a code like that:  
 ]
   
-
 ```{r, eval=FALSE}
 server <- function(input, output) {
   ...
@@ -125,11 +144,11 @@ server <- function(input, output) {
       penguins %>%
         ggplot(aes(x = bill_length_mm, y = bill_depth_mm)) +
         geom_point() + 
-        { if(`input$smooth == "yes"`) {
+        { if(input$smooth == "yes") { 
           geom_smooth(se = FALSE, 
                       method = "lm", 
                       formula = "y ~ x")
-        }}
+          }}
     })
   ...
 }

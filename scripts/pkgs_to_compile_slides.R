@@ -2,7 +2,7 @@
 `%not in%` <- Negate(`%in%`)
 
 needed_packages <-
-  c("xaringan", "xaringanthemer", "ggthemes")
+  c("xaringan", "xaringanthemer", "ggthemes", "magick")
 
 # a helper abbreviation
 `%not in%` <- Negate(`%in%`)
