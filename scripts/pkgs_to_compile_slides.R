@@ -2,13 +2,7 @@
 `%not in%` <- Negate(`%in%`)
 
 needed_packages <-
-  c("remotes", "shiny", "shinydashboard", "flexdashboard", 
-    # data wrangling and plotting packages
-    "tidyverse", "patchwork", "ggsci", "glue", 
-    # toy datasets
-    "palmerpenguins", "ggplot2movies",
-    # interactive plots
-    "plotly")
+  c("xaringan", "xaringanthemer")
 
 # a helper abbreviation
 `%not in%` <- Negate(`%in%`)
@@ -32,7 +26,7 @@ for (pkg in needed_packages) {
 
 # additional packages from github
 needed_packages_remotes <- 
-  c("jokergoo/ComplexHeatmap")
+  c("gadenbuie/xaringanExtra")
 
 for (pkg in needed_packages_remotes) {
   pkg_name <- basename(pkg)
