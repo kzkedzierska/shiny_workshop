@@ -1,0 +1,27 @@
+---
+title: "Learning Shiny"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Welcome to Learning Shiny materials. This repository contains all necessary materials for the class  Introduction to Shiny – interactive apps with R held on 27/04/2022 in Big Data Institute, Oxford. 
+ 
+## Setup
+
+To prepare for class please clone this repository and run the preparation script.
+
+If the script executes properly the following messages should be printed.
+
+```{r, include=FALSE, message=FALSE, error=FALSE, warning=FALSE, echo=FALSE}
+source("scripts/prep_help.R")
+```
+
+```{r}
+source("scripts/prep_help.R")
+```
+
+*Note:* The repo might change since last time you clone it, so please update it the evening before and check the above setup then.
+
