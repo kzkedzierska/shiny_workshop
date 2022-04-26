@@ -1,0 +1,220 @@
+---
+title: "Penguins dashboard example"
+# author: Kasia Kedzierska
+output: 
+  flexdashboard::flex_dashboard:
+    logo: figs/penguins_small.png
+    theme:
+      bootswatch: minty
+    orientation: rows
+    vertical_layout: fill
+    source_code: embed
+runtime: shiny
+---
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+library(shiny)
+library(palmerpenguins)
+library(tidyverse)
+library(DT)
+library(patchwork)
+library(glue)
+# Install thematic and un-comment for themed static plots (i.e., ggplot2)
+thematic::thematic_rmd()
+```
+
+```{r defaults}
+pretty_penguin_axis <-
+  c("Bill length [mm]" = "bill_length_mm",
+    "Bill depth [mm]" = "bill_depth_mm",
+    "Flipper length [mm]" = "flipper_length_mm",
+    "Body mass [g]" = "body_mass_g")
+pretty_penguin_colors <-
+  c("Species" = "species",
+    "Sex" = "sex",
+    "Island" = "island")
+```
+
+
+Palmer penguins
+===================================== 
+
+Row {data-width=1000 .tabset}
+-----------------------------------------------------------------------
+
+### About the dataset
+
+Data originally published in:
+
+> Gorman KB, Williams TD, Fraser WR (2014). Ecological sexual dimorphism and environmental variability within a community of Antarctic penguins (genus Pygoscelis). PLoS ONE 9(3):e90081. https://doi.org/10.1371/journal.pone.0090081
+
+These data were collected from 2007 - 2009 by Dr. Kristen Gorman with the [Palmer Station Long Term Ecological Research Program](https://pal.lternet.edu/), part of the [US Long Term Ecological Research Network](https://lternet.edu/). The data were imported directly from the [Environmental Data Initiative](https://environmentaldatainitiative.org/) (EDI) Data Portal, and are available for use by CC0 license (“No Rights Reserved”) in accordance with the [Palmer Station Data Policy](https://pal.lternet.edu/data/policies). 
+
+Read more [here](https://allisonhorst.github.io/palmerpenguins/).
+
+#### Meet the Penguins!
+
+<img src="figs/penguins.png" width="50%" alt="The Palmer Archipelago penguins. Artwork by @allison_horst.">
+
+The Palmer Archipelago penguins. Artwork by @allison_horst.
+
+### What do we measure when looking at culmen/bill?
+
+<img src="figs/culmen_depth.png" />
+
+Visuals
+=====================================  
+
+Inputs {.sidebar}
+-----------------------------------------------------------------------
+
+```{r}
+selectInput(inputId = "xaxis",
+            label = "Choose x-axis:",
+            choices = pretty_penguin_axis,
+            selected = pretty_penguin_axis[1])
+# select y axis
+selectInput(inputId = "yaxis",
+            label = "Choose a y-axis:",
+            choices = pretty_penguin_axis,
+            selected = pretty_penguin_axis[2])
+# add color by?
+selectInput(inputId = "colorby",
+            label = "Color data points?",
+            choices = pretty_penguin_colors)
+
+# Select whether to overlay smooth trend line
+checkboxInput(inputId = "smooth",
+              label = strong("Add regression lines"),
+              value = FALSE)
+```
+
+
+Row
+-------------------------------------
+
+### Penguins measured
+
+```{r n_penguins}
+n_penguins <- nrow(penguins)
+valueBox(n_penguins, icon = "fa-pencil")
+```
+
+### Average culmen length
+
+```{r cul_length}
+culmen_summary <- 
+  penguins %>%
+  summarise(across(contains("bill"), 
+                   ~ paste(round(mean(.x, na.rm = TRUE)), "mm")))
+
+valueBox(culmen_summary$bill_length_mm, 
+         icon = "fa-ruler")
+```
+
+### Average culmen depth
+
+```{r cul_depth}
+valueBox(culmen_summary$bill_depth_mm, 
+         icon = "fa-ruler")
+```
+
+### Average body mass
+
+```{r mass}
+penguins_mass <-
+  penguins %>%
+  filter(!is.na(body_mass_g)) %>% 
+  summarise(min = round(min(body_mass_g), 0), 
+            max = round(max(body_mass_g), 0), 
+            mean = round(mean(body_mass_g), 0))
+
+gauge(penguins_mass$mean, 
+      min = penguins_mass$min, 
+      max = penguins_mass$max, 
+      symbol = ' [g]', 
+      abbreviate = FALSE)
+```
+
+
+Row {.tabset}
+-----------------------------------------------------------------------
+
+
+### Scatter points
+
+```{r}
+renderPlot({
+  x_name <- names(pretty_penguin_axis[pretty_penguin_axis == input$xaxis])
+  y_name <- names(pretty_penguin_axis[pretty_penguin_axis == input$yaxis])
+  plt_all <-
+    penguins %>%
+    ggplot(aes_string(x = input$xaxis, y = input$yaxis)) +
+    geom_point() +
+    {if (input$smooth) geom_smooth(se = FALSE, method = "lm", formula = "y ~ x")} +
+    labs(x = x_name,
+         y = y_name) 
+  plt <-
+    penguins %>%
+    ggplot(aes_string(x = input$xaxis, y = input$yaxis,
+                      color = input$colorby)) +
+    geom_point() +
+    {if (input$smooth) geom_smooth(se = FALSE, method = "lm", formula = "y ~ x")} +
+    labs(x = x_name,
+         y = y_name,
+         color = names(pretty_penguin_colors[pretty_penguin_colors == input$colorby])) 
+  patch <- 
+    plt_all + plt +
+    plot_annotation(title = "Palmer Penguins size",
+                    subtitle = glue("{x_name} and {y_name} for {glue_collapse(sort(unique(penguins$species)), sep = ', ', last = ' and ')} Penguins."))
+  patch &  theme(legend.position = "bottom")
+})
+```
+
+### Histogram
+
+```{r fig.width = 12, fig.height= 5}
+# add histogram of flipper lengths here 
+
+penguins %>%
+  rename(pretty_penguin_axis) %>%
+  pivot_longer(names_to = "measurement", values_to = "value", 
+               -c(species, island, sex, year)) %>%
+  ggplot(aes(value, fill = species)) +
+  geom_histogram() +
+  facet_grid(species~measurement, scales = "free") +
+  labs(fill = "Species") +
+  theme(axis.title = element_blank(), legend.position = "bottom")
+```
+
+
+Data
+=====================================  
+
+Row {.tabset}
+-----------------------------------------------------------------------
+
+### Summary
+
+```{r}
+# add summary of each value per group 
+penguins %>% 
+  group_by(species) %>% 
+  summarize(across(where(is.numeric), mean, na.rm = TRUE)) %>% 
+  rename(c(pretty_penguin_axis, "Species" = "species", "Year" = "year")) %>%
+  datatable(rownames = FALSE) %>%
+  formatRound(names(pretty_penguin_axis), 2) %>%
+  formatRound("Year", 0)
+```
+
+### Data 
+
+```{r}
+penguins %>%
+  slice_sample(prop = 1) %>%
+  rename(c(pretty_penguin_axis, pretty_penguin_colors, "Year" = "year")) %>%
+  DT::datatable(filter = 'top', options = list(pageLength = 10), 
+                rownames = FALSE) 
+```
+
