@@ -49,7 +49,7 @@ gapminder %>%
   DT::datatable()
 ```
 
-```{r}
+```{r, eval=FALSE}
 gapminder %>%
   select(-country) %>%
   tbl_summary(label = list(continent ~ "Continent", year ~ "Year",
@@ -60,7 +60,23 @@ gapminder %>%
                 "{median} ({p25}, {p75})",
                 "{min}, {max}")) %>%
   bold_labels() %>%
-  modify_header(label ~ "**Variable**")
+  modify_header(label ~ "**Variable**") 
+```
+
+```{r, echo=FALSE, out.width="50%"}
+gapminder %>%
+  select(-country) %>%
+  tbl_summary(label = list(continent ~ "Continent", year ~ "Year",
+                           lifeExp ~ "Life Expectancy", pop ~ "Population",
+                           gdpPercap ~ "GDP per Capita"),
+              type = all_continuous() ~ "continuous2",
+              statistic = all_continuous() ~ c(
+                "{median} ({p25}, {p75})",
+                "{min}, {max}")) %>%
+  bold_labels() %>%
+  modify_header(label ~ "**Variable**") %>%
+  as_gt() %>%
+  gt::gtsave("README_files/gt_summary.png")
 ```
 
 # Some tips, ideas and code
