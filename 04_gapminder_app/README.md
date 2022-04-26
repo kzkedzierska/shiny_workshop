@@ -59,7 +59,7 @@ gapminder %>%
   DT::datatable()
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-2-1.png)<!-- -->
+![](README_files/figure-gfm/data-1.png)<!-- -->
 
 ``` r
 gapminder %>%
@@ -75,7 +75,7 @@ gapminder %>%
   modify_header(label ~ "**Variable**") 
 ```
 
-<img src="README_files/figure-gfm/unnamed-chunk-4-1.png" width="50%" /><img src="README_files/gt_summary.png" width="50%" />
+<img src="README_files/figure-gfm/gt_summary-1.png" width="50%" />
 
 # Some tips, ideas and code
 
@@ -96,7 +96,7 @@ gapminder %>%
         legend.box = "vertical")
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
+![](README_files/figure-gfm/bubble_plot-1.png)<!-- -->
 
 For example, you might want to create a reactive plot, where the user
 will be able to choose a country to highlight and a year to show on the
@@ -124,7 +124,7 @@ gapminder %>%
        color = "Continent", size = "Population") 
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
+![](README_files/figure-gfm/select_year_county_plot-1.png)<!-- -->
 
 Another idea for visualising the data is to look at the change of life
 expectancy.
@@ -142,8 +142,9 @@ gapminder %>%
   scale_x_continuous(breaks = unique(gapminder$year)[c(TRUE, FALSE, FALSE)])
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-7-1.png)<!-- --> Or to look up
-wealth per continent.
+![](README_files/figure-gfm/life_expectancy_plot-1.png)<!-- -->
+
+Or to look up wealth per continent.
 
 ``` r
 gapminder %>%
@@ -167,7 +168,7 @@ gapminder %>%
         legend.position = "none")
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
+![](README_files/figure-gfm/gdp_boxplot-1.png)<!-- -->
 
 # Your turn!
 

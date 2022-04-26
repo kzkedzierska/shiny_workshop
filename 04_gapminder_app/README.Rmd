@@ -39,7 +39,7 @@ thematic::thematic_rmd()
 theme_update(legend.position = "bottom", legend.box = "vertical")
 ```
 
-```{r}
+```{r, data}
 gapminder %>%
   rename(Country = country, Continent = continent, Year = year,
          `Life expectancy at birth` = lifeExp, 
@@ -63,7 +63,7 @@ gapminder %>%
   modify_header(label ~ "**Variable**") 
 ```
 
-```{r, echo=FALSE, out.width="50%"}
+```{r gt_summary, echo=FALSE, out.width="50%"}
 gapminder %>%
   select(-country) %>%
   tbl_summary(label = list(continent ~ "Continent", year ~ "Year",
@@ -77,15 +77,13 @@ gapminder %>%
   modify_header(label ~ "**Variable**") %>%
   as_gt() %>%
   gt::gtsave("README_files/gt_summary.png")
-
-knitr::include_graphics("README_files/gt_summary.png")
 ```
 
 # Some tips, ideas and code
 
 First of all, you can show the relationship between life expectancy and country's wealth across the years. 
 
-```{r}
+```{r, bubble_plot}
 gapminder %>%
   ggplot(aes(gdpPercap, lifeExp, color = continent, size = pop)) +
   geom_point() +
@@ -101,7 +99,7 @@ gapminder %>%
 
 For example, you might want to create a reactive plot, where the user will be able to choose a country to highlight and a year to show on the plot. 
 
-```{r}
+```{r, select_year_county_plot}
 selected_countries <-
   sample(unique(gapminder$country), 7)
 selected_year <- "2002"
@@ -125,7 +123,7 @@ gapminder %>%
 
 Another idea for visualising the data is to look at the change of life expectancy. 
 
-```{r}
+```{r, life_expectancy_plot}
 gapminder %>%
   ggplot(aes(year, lifeExp, group = country, color = continent)) +
   geom_line() +
@@ -137,9 +135,10 @@ gapminder %>%
        color = "Continent") +
   scale_x_continuous(breaks = unique(gapminder$year)[c(TRUE, FALSE, FALSE)])
 ```
+
 Or to look up wealth per continent. 
 
-```{r}
+```{r, gdp_boxplot}
 gapminder %>%
   filter(year == selected_year) %>%
   group_by(continent) %>%
