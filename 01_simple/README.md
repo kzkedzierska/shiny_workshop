@@ -1,6 +1,12 @@
 First steps - exercise
 ================
 
+**Outline:**
+
+-   [First look at shiny apps](#first-look-at-shiny-apps)
+-   [First steps in editing shiny](#first-steps-in-editing-shiny)
+    -   [Task description](#task-description)
+
 # First look at shiny apps
 
 In this exercise we will get more acquainted with Shiny apps. We will
@@ -36,7 +42,7 @@ To explore the reactivity more, try the 3rd example.
 runExample("03_reactivity")
 ```
 
-<img src="graphics/03_reactivity.png" width="70%" />
+<img src="graphics/03_reactivity.png" width="50%" />
 
 To see how we can arrange content let’s explore tabsets.
 
@@ -44,7 +50,7 @@ To see how we can arrange content let’s explore tabsets.
 runExample("06_tabsets")
 ```
 
-<img src="graphics/06_tabsets.png" width="70%" />
+<img src="graphics/06_tabsets.png" width="50%" />
 
 And to explore how we ‘stylize’ the app - look at the html example.
 
@@ -52,14 +58,14 @@ And to explore how we ‘stylize’ the app - look at the html example.
 runExample("08_html")
 ```
 
-<img src="graphics/08_html.png" width="70%" />
+<img src="graphics/08_html.png" width="50%" />
 
 # First steps in editing shiny
 
 This exercise is based on tabsets example from `shiny` package. I copied
 the code of the app into the `app.R` file.
 
-<img src="graphics/simple_app_code.png" width="70%" />
+<img src="graphics/simple_app_code.png" width="50%" />
 
 You can run the app by opening the app.R file and press `Run App` button
 in the upper right corner of your script window.
@@ -75,7 +81,7 @@ shiny::runApp('01_simple')
 
     ## Listening on http://127.0.0.1:XXXX
 
-<img src="graphics/simple_app.png" width="70%" />
+<img src="graphics/simple_app.png" width="50%" />
 
 ## Task description
 
@@ -93,7 +99,7 @@ hist(dist, main = "Histogram with 10 bins", breaks = 10)
 hist(dist, main = "Histogram with 50 bins", breaks = 50)
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->
+<img src="README_files/figure-gfm/unnamed-chunk-14-1.png" width="60%" />
 
 -   change the output in `Summary` tab. You want your output to be text.
     Something along the lines of:
@@ -110,7 +116,7 @@ summary_vec <- summary(dist)
 glue("All observations fall within the {summary_vec['Min.']} - {summary_vec['Max.']} range")
 ```
 
-    ## All observations fall within the -3.14787980305959 - 2.75653715908694 range
+    ## All observations fall within the -2.61955017530067 - 2.81333005757452 range
 
 Good luck! :)
 

@@ -90,20 +90,19 @@ I need help, I am lost, not sure what am I supposed to do or `R` is throwing err
   * reactivity
 * Dashboards and more
 * Hands-on
-  * simple example
-  * more complex example
+  * first steps
   * structured example
   * dashboard example
   * app from scratch
 
 ---
-
 class: inverse, center, middle
 
-# Shiny - introduction
+# Shiny - introduction  
+
 ---
 
-# What is Shiny?
+## What is Shiny?
 
 &gt; Shiny is an R package that makes it easy to build interactive web apps straight from R.
 
@@ -126,19 +125,35 @@ In other words it allows us to build websites with results of our analyse withou
 &lt;iframe id="scaled-frame" src="https://kzkedzierska.shinyapps.io/penguin_plot_/" width=900 height=480 frameBorder="0"&gt;&lt;/iframe&gt;
 
 ---
-# Shiny Apps gallery
+## Shiny Apps gallery
 
 &lt;iframe src="https://shiny.rstudio.com/gallery/#demos" width=900 height=425 frameBorder="0"&gt;&lt;/iframe&gt;
 
 .footnote[[shiny.rstudio.com/gallery/](https://shiny.rstudio.com/gallery/)]
 
 ---
+## Resources
+
+* [Mastering Shiny](https://mastering-shiny.org/) by Hadley Wickham
+* [Shiny tutorial](https://shiny.rstudio.com/tutorial/) on RStudio website
+
+.pull-left.w20[
+&lt;img src="misc/mastering_shiny_cover.png" width="667" /&gt;
+]
+
+.pull-right.w75[
+&lt;iframe src="https://shiny.rstudio.com/tutorial/written-tutorial/lesson1/?showcase=0" width="100%" height="250" data-external="1"&gt;&lt;/iframe&gt;
+]
+
+
+---
 class: inverse, center, middle
 
-# Anatomy of shiny
+# Anatomy of shiny  
+
 ---
 
-# Anatomy of shiny
+## Anatomy of Shiny App 
 
 Shiny requires:
 
@@ -169,7 +184,7 @@ shinyApp(ui, server)
 ]
 
 ---
-# Anatomy of shiny
+## Anatomy of Shiny App  
 
 Shiny requires:
 
@@ -200,7 +215,7 @@ shinyApp(ui, server)
 ]
 
 ---
-# Anatomy of shiny
+## Anatomy of Shiny App 
 
 Shiny requires:
 
@@ -231,8 +246,7 @@ shinyApp(ui, server)
 ]
 
 ---
-
-# Anatomy of shiny
+## Anatomy of Shiny App 
 
 Shiny requires:
 
@@ -263,7 +277,111 @@ server &lt;-
 ]
 
 ---
-# Reactive elements 
+## Histogram App
+
+.pull-left.w60[
+
+```r
+library(shiny)
+
+ui &lt;- fluidPage(
+  title = "Histogram App",
+  sliderInput("n", 
+              "Number of observations", 
+              value = 500,
+              min = 1, max = 10000),
+  plotOutput("hist")
+)
+
+server &lt;- 
+  function(input, output, session) {
+    output$hist &lt;- renderPlot({
+      nobs &lt;- input$n
+      hist(rnorm(nobs))
+    })
+  }
+shinyApp(ui, server)
+```
+]
+
+.pull-right.w35[
+&lt;img src="misc/histogram_app.png" width="819" /&gt;
+]
+
+---
+## Inputs
+
+.pull-left.w48[
+&lt;img src="misc/inputs_left.png" width="1056" /&gt;
+]
+
+.pull-right.w48[
+&lt;img src="misc/inputs_right.png" width="1105" /&gt;
+]
+
+---
+## Inputs
+
+
+
+```r
+library(shiny)
+
+ui &lt;- fluidPage(
+  title = "Histogram App",
+* sliderInput("n",
+*             "Number of observations",
+*             value = 500,
+*             min = 1, max = 10000),
+  plotOutput("hist")
+)
+
+server &lt;- 
+  function(input, output, session) {
+    output$hist &lt;- renderPlot({
+*     nobs &lt;- input$n
+      hist(rnorm(nobs))
+    })
+  }
+shinyApp(ui, server)
+```
+
+---
+## Outputs
+
+&lt;img src="misc/outputs.png" /&gt;
+
+---
+## Outputs
+
+
+```r
+library(shiny)
+
+ui &lt;- fluidPage(
+  title = "Histogram App",
+  sliderInput("n", 
+              "Number of observations", 
+              value = 500,
+              min = 1, max = 10000), 
+* plotOutput("hist")
+)
+
+server &lt;- 
+  function(input, output, session) {
+*   output$hist &lt;- renderPlot({
+      nobs &lt;- input$n 
+*     hist(rnorm(nobs))
+*   })
+  }
+shinyApp(ui, server)
+```
+
+---
+## Layout
+
+---
+## Reactive elements 
 
 The key functionality of Shiny are reactive elements we can add to our apps. For example, remember the plot from previous simple example? We were able to add regression line after selecting the proper option. That is because the app **reacted** to our (= user) input.
 
@@ -272,7 +390,7 @@ The key functionality of Shiny are reactive elements we can add to our apps. For
 ]
 
 ---
-# Reactive elements 
+## Reactive elements 
 
 .pull-left.w60[
 .center[
@@ -309,12 +427,131 @@ And in the UI this is what user will see depending chosen option:
 
 ]]
 
+---
+class: inverse, center, middle
 
+# Dashboards  
+
+---
+# Dashboards
+
+.pull-left.w48[
+
+[flexdashboard](https://pkgs.rstudio.com/flexdashboard/index.html) 
+
+* R Markdown
+* **Super easy**
+* Static or dynamic
+]
+
+.pull-right.w48[
+[shinydashboard](https://rstudio.github.io/shinydashboard/index.html)
+
+* Shiny UI code
+* Not quite as easy
+* Dynamic
+]
+
+--
+
+.pull-left.w48[
+
+```markdown
+---
+title: "Untitled"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+---
+```
+
+]
+
+.pull-right.w48[
+
+```r
+library(shiny)
+library(shinydashboard)
+
+ui &lt;- dashboardPage(
+  dashboardHeader(),
+  dashboardSidebar(),
+  dashboardBody()
+)
+server &lt;- function(input, 
+                   output) {
+}
+shinyApp(ui, server)
+```
+]
+
+
+---
+# Dashboards
+
+.pull-left.w48[
+
+[flexdashboard](https://pkgs.rstudio.com/flexdashboard/index.html) 
+
+* R Markdown
+* **Super easy**
+* Static or dynamic
+]
+
+.pull-right.w48[
+[shinydashboard](https://rstudio.github.io/shinydashboard/index.html)
+
+* Shiny UI code
+* Not quite as easy
+* Dynamic
+]
+
+.pull-left.w48[
+&lt;img src="misc/flexdashboard.png" width="1285" /&gt;
+
+]
+
+.pull-right.w48[
+&lt;img src="misc/shinydashboard.png" width="1344" /&gt;
+]
 
 
 ---
 
-### Thanks for following!
+## [Flexdashboard](https://pkgs.rstudio.com/flexdashboard/index.html)
+
+&lt;iframe src="https://pkgs.rstudio.com/flexdashboard/index.html?showcase=0" width="100%" height="400px" data-external="1"&gt;&lt;/iframe&gt;
+
+
+.footnote[
+You can find more examples [here](https://pkgs.rstudio.com/flexdashboard/articles/examples.html).
+]
+
+---
+class: inverse, center, middle
+
+# Exercises  
+
+---
+# Hands on exercises
+
+In this repo there are 4 exercises:
+
+* 01_simple
+* 02_structured
+* 03_dashboard
+* 04_app_from_scratch
+
+Each exercise is placed in sepearate directory with instructions in README files and 
+---
+class: inverse, center, middle
+
+# The end  
+
+---
+
+# Thanks for following!
 
 It's now time for questions and chat :)
 
@@ -345,13 +582,7 @@ Early Bird: &lt;b&gt;11.07&lt;/b&gt; &lt;/td&gt;
 &lt;tr&gt;
 &lt;/table&gt;
 
-
- 
-
-
-
-
-.footnote[Slides created via the R package [**xaringan**](https://github.com/yihui/xaringan).]
+.footnote[Slides created via the R package [**xaringan**](https://github.com/yihui/xaringan) and [**xaringanExtra**](https://pkg.garrickadenbuie.com/xaringanExtra/#/).]
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>

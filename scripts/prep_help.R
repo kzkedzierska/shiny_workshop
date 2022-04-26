@@ -7,7 +7,7 @@ needed_packages <-
     # data wrangling and plotting packages
     "tidyverse", "patchwork", "ggsci", "glue", "thematic",
     # toy datasets
-    "palmerpenguins",
+    "palmerpenguins", "gapminder",
     # presenting data interactively
     "DT",
     # interactive plots
@@ -40,8 +40,7 @@ for (pkg in needed_packages) {
 
 # additional packages from github
 needed_packages_remotes <- 
-  c("jokergoo/ComplexHeatmap",
-    'rstudio/flexdashboard')
+  c("rstudio/flexdashboard")
 
 for (pkg in needed_packages_remotes) {
   pkg_name <- basename(pkg)

@@ -26,7 +26,8 @@ for (pkg in needed_packages) {
 
 # additional packages from github
 needed_packages_remotes <- 
-  c("gadenbuie/xaringanExtra")
+  c("gadenbuie/xaringanExtra",
+    "jokergoo/ComplexHeatmap")
 
 for (pkg in needed_packages_remotes) {
   pkg_name <- basename(pkg)
