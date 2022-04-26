@@ -1,6 +1,8 @@
 Structured app
 ================
 
+# Structure of Shiny app directory
+
 Typical directory structure of an app.
 
 ``` bash
@@ -12,7 +14,7 @@ app_name
 └── www/
 ```
 
-# Directory
+## Directory
 
 `app_name` is the name of the directory and app name. To run the app you
 can run the following command in the console.
@@ -21,10 +23,10 @@ can run the following command in the console.
 shiny::runApp("path/to/app_name")
 ```
 
-# `app.R`
+## `app.R`
 
-Inside that directory has to be the only required file - `app.R`. For
-example it will have the following content.
+Inside that directory has to be the only required file - `app.R`. In
+this example it will have the following content.
 
 ``` r
 library(shiny)
@@ -45,7 +47,7 @@ specified in the `app.R` file. That’s because they are defined
 `counter.R` file in the `R` sub directory. Note that we don’t have to
 `source("R/counter.R")` file.
 
-# `R/`
+## `R/`
 
 The `R` directory contains the files that will be sourced, without you
 having to source them, when your app starts.
@@ -84,11 +86,51 @@ counter <- function(input, output, session) {
 }
 ```
 
-# `README` and `DESCRIPTION`
+## `README` and `DESCRIPTION`
 
 However it is a good practice to contain those, they are not required.
 
-# `www`
+## `www`
 
 This is an optional directory to share with a browser. Can contain
-images, css and java script files to extend and customise the Shiny app.
+images, css and java script files to extend and customize the Shiny app.
+
+# Exercise description
+
+First, check out the app in the `structured_app` directory. Run the
+following from within the `02_structured` directory, or open `app.R`
+file and run it using `Run App` button in R Studio.
+
+``` r
+shiny::runApp("structured_app/")
+```
+
+You should see the following pop up with an app.
+
+``` r
+knitr::include_graphics("graphics/structured_app.png")
+```
+
+![](graphics/structured_app.png)<!-- -->
+
+Right now, it only has one button and a text output with the number of
+times user has pressed it.
+
+## Your task
+
+Your task is to:
+
+-   use the **code from the previous example and clean it up** -
+    i.e. move the code into module(s) and corresponding R file(s)
+-   modify **button** from structured example, such that instead of
+    choosing a distribution or counting number of times it is pressed,
+    after each press it will **randomly choose a distribution** and
+    refresh the content of the app.
+
+This is how the ready app can look like.
+
+``` r
+knitr::include_graphics("graphics/structured_app_answer.png")
+```
+
+<img src="graphics/structured_app_answer.png" width="50%" />

@@ -112,4 +112,8 @@ Your task is to:
 * use the **code from the previous example and clean it up** - i.e. move the code into module(s) and corresponding R file(s)
 * modify **button** from structured example, such that instead of choosing a distribution or counting number of times it is pressed, after each press it will **randomly choose a distribution** and refresh the content of the app.
 
+This is how the ready app can look like.
 
+```{r app_answer_screenshot, eval=TRUE, out.width="50%"}
+knitr::include_graphics("graphics/structured_app_answer.png")
+```
