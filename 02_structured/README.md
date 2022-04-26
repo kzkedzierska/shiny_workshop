@@ -1,23 +1,35 @@
 Structured app
 ================
 
-# Structure of Shiny app directory
+This exercise explore structuring the shiny app code and mainlining a
+more manageable code base by splitting the elements into modules.
+
+**Outline**:
+
+-   [Structure of Shiny App
+    directory](#structure-of-shiny-app-directory)
+-   [Structured example](#structured-example)
+-   [Exercise description](#exercise-description)
+
+# Structure of Shiny App directory
 
 Typical directory structure of an app.
 
 ``` bash
 app_name
 ├── app.R
-├── DESCRIPTION
-├── R/
-├── README
-└── www/
+├── DESCRIPTION # optional
+├── R/ # optional
+├── Readme.md # optional
+└── www/ # optional
 ```
 
 ## Directory
 
-`app_name` is the name of the directory and app name. To run the app you
-can run the following command in the console.
+The app is stored in the directory with its name: `app_name`. To run the
+app we can run the following command in the console. `shiny` will then
+run your app by executing the `app.R` (or `server.R` and `ui.R`) and all
+`.R` files in the `R/` directory.
 
 ``` r
 shiny::runApp("path/to/app_name")
@@ -25,8 +37,54 @@ shiny::runApp("path/to/app_name")
 
 ## `app.R`
 
-Inside that directory has to be the only required file - `app.R`. In
-this example it will have the following content.
+It is the only necessary file for your app to run. In earlier versions
+of `shiny` the file would be split into two: `server.R` & `ui.R` and
+that structure is still supported. You can read more about differences
+between those two approaches, and more on the directory structure
+[here](https://shiny.rstudio.com/articles/app-formats.html).
+
+## `R/`
+
+The `R` directory contains the files that will be sourced, without you
+having to source them, when your app starts.
+
+> As of Shiny version 1.3.2.9001, any .R files found in an R/ directory
+> adjacent to your app will be automatically loaded when your app
+> starts. Just like R packages, only the files at the top level of R/
+> are considered; nested directories are ignored. Files in this
+> directory are sourced in alphabetical order and any variables,
+> functions, or modules they create are available to be used in your
+> app.R, ui.R, or server.R files.
+
+From [here](https://shiny.rstudio.com/articles/app-formats.html).
+
+## `Readme.md` and `DESCRIPTION`
+
+Those files are optional and can be used to share more information with
+the audience of your app, as well as in showcase mode. In the
+`DESCRIPTION` file you can specify the author, mode (showcase or
+normal), license and so on. `Readme.md` will populate the app
+description field. To check this out run the following command and check
+the files in the `structured_example` sub directory.
+
+``` r
+shiny::runApp("structured_example/")
+```
+
+## `www`
+
+This is an optional directory to share with a browser. Can contain
+images, css and java script files to extend and customize the Shiny app.
+
+# Structured example
+
+Let’s consider a simple example in `structured_example` sub directory.
+
+The `app.R` is very short and contains calls to `counter` module and
+`counterButton` that are not specified in the file. As mentioned before,
+the `.R` scripts contained in `R` sub directory will be executed when
+the app is run and therefore there is no need to include a call to
+`source("R/counter.R")`.
 
 ``` r
 library(shiny)
@@ -42,28 +100,8 @@ server <- function(input, output, session) {
 shinyApp(ui, server)
 ```
 
-We are calling a `counter` module and `counterButton` that are not
-specified in the `app.R` file. That’s because they are defined
-`counter.R` file in the `R` sub directory. Note that we don’t have to
-`source("R/counter.R")` file.
-
-## `R/`
-
-The `R` directory contains the files that will be sourced, without you
-having to source them, when your app starts.
-
-> As of Shiny version 1.3.2.9001, any .R files found in an R/ directory
-> adjacent to your app will be automatically loaded when your app
-> starts. Just like R packages, only the files at the top level of R/
-> are considered; nested directories are ignored. Files in this
-> directory are sourced in alphabetical order and any variables,
-> functions, or modules they create are available to be used in your
-> app.R, ui.R, or server.R files.
-
-From [here](https://shiny.rstudio.com/articles/app-formats.html)
-
-As mentioned above, in our example we have `counter.R` file in the `R`
-sub directory in which we define `counter` module and `counterButton`.
+`counter` module and `counterButton` are defined in the `counter.R` file
+in the `R` sub directory.
 
 ``` r
 counterButton <- function(id, label = "Counter") {
@@ -86,51 +124,70 @@ counter <- function(input, output, session) {
 }
 ```
 
-## `README` and `DESCRIPTION`
+Check out the app in the `structured_app` directory and make sure it is
+working. Run the following from within the `02_structured` directory, or
+open `app.R` file and run it using `Run App` button in R Studio.
 
-However it is a good practice to contain those, they are not required.
+``` r
+shiny::runApp("structured_example/", display.mode = "normal")
+```
 
-## `www`
+<img src="graphics/structured_example_app.png" width="30%" />
 
-This is an optional directory to share with a browser. Can contain
-images, css and java script files to extend and customize the Shiny app.
+While in this example it might not look needed, if you would create a
+large app, storing each part in a separate module (and file) might a be
+good idea to keep the code easier to maintain.
 
 # Exercise description
 
-First, check out the app in the `structured_app` directory. Run the
-following from within the `02_structured` directory, or open `app.R`
-file and run it using `Run App` button in R Studio.
+Run the exercise app and explore it for a moment. Is everything working
+as it should?
 
 ``` r
-shiny::runApp("structured_app/")
+shiny::runApp("exercise/")
 ```
-
-You should see the following pop up with an app.
-
-``` r
-knitr::include_graphics("graphics/structured_app.png")
-```
-
-![](graphics/structured_app.png)<!-- -->
-
-Right now, it only has one button and a text output with the number of
-times user has pressed it.
 
 ## Your task
 
-Your task is to:
+Your task is to 2-fold:
 
--   use the **code from the previous example and clean it up** -
-    i.e. move the code into module(s) and corresponding R file(s)
--   modify **button** from structured example, such that instead of
-    choosing a distribution or counting number of times it is pressed,
-    after each press it will **randomly choose a distribution** and
-    refresh the content of the app.
+### fix the `Summary` tab
 
-This is how the ready app can look like.
+There is a mistake somewhere in the `button.R` file. Inspect the
+`random_button_ui` function and fix the mistake.
+
+### the button
+
+There is code missing inside the `random_button_server` function.
 
 ``` r
-knitr::include_graphics("graphics/structured_app_answer.png")
+# initialise reactive value and set a default
+random_dist <- reactiveVal(distributions[1])
+
+# update the value, hint: *sample* from the available distributions
+observeEvent(input$button, {
+  
+  ### your code goes here ###
+  
+})
 ```
+
+Let me remind you how the equivalent code looks in the simple counter
+example:
+
+``` r
+count <- reactiveVal(0)
+
+observeEvent(input$button, {
+  
+  count(count() + 1)
+  
+})
+```
+
+Do you know what do you need to do? I hope the clues are enough to help
+you but please remember to ask for help if you need it!
+
+And this is how the ready app can look like.
 
 <img src="graphics/structured_app_answer.png" width="50%" />

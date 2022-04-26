@@ -16,9 +16,9 @@ random_button_ui <- function(id, label = "Regenerate") {
     # a button to choose the distribution
     actionButton(ns("button"), label = label),
     helpText(paste0("Upon pressing the button, a distribution is randomly ",
-                    "selected and content is refreshed. ", 
-                    "One of the distribution is chosen: ",
-                    dist_help_text, ".")),
+                   "selected and content is refreshed. ", 
+                   "One of the distribution is chosen: ",
+                   dist_help_text, ".")),
     br(),
     # make space for letting the user know which one was chosen
     textOutput(ns("out")),
@@ -39,7 +39,7 @@ random_button_ui <- function(id, label = "Regenerate") {
     
     tabsetPanel(type = "tabs",
                 tabPanel("Plot", plotOutput(ns("plot"))),
-                tabPanel("Summary", htmlOutput(ns("summary"))),
+                tabPanel("Summary", htmlOutput("summary")),
                 tabPanel("Table", tableOutput(ns("table"))))
   )
 }
@@ -51,8 +51,10 @@ random_dist_server <- function(input, output, session) {
   
   # update the value, hint: *sample* from the available distributions
   observeEvent(input$button, {
-    random_dist(sample(distributions, 1))
-  })
+    
+    ### your code goes here ###
+  
+    })
   
   # switch the distributions based on one that was sampled
   d <- reactive({
