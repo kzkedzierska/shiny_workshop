@@ -63,7 +63,7 @@ gapminder %>%
   modify_header(label ~ "**Variable**") 
 ```
 
-```{r gt_summary, echo=FALSE, out.width="50%"}
+```{r gt_summary, echo=FALSE, out.width="30%"}
 gapminder %>%
   select(-country) %>%
   tbl_summary(label = list(continent ~ "Continent", year ~ "Year",

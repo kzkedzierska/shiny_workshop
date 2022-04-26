@@ -75,7 +75,7 @@ gapminder %>%
   modify_header(label ~ "**Variable**") 
 ```
 
-<img src="README_files/figure-gfm/gt_summary-1.png" width="50%" />
+<img src="README_files/figure-gfm/gt_summary-1.png" width="30%" />
 
 # Some tips, ideas and code
 
