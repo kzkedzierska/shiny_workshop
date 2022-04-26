@@ -77,6 +77,8 @@ gapminder %>%
   modify_header(label ~ "**Variable**") %>%
   as_gt() %>%
   gt::gtsave("README_files/gt_summary.png")
+
+knitr::include_graphics("README_files/gt_summary.png")
 ```
 
 # Some tips, ideas and code
