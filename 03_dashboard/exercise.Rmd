@@ -127,6 +127,12 @@ valueBox(culmen_summary$bill_length_mm,
          icon = "fa-ruler")
 ```
 
+### Average culmen depth
+
+```{r cul_depth}
+# your code goes here
+```
+
 
 ### Average body mass
 
@@ -180,12 +186,25 @@ renderPlot({
 })
 ```
 
+### Histogram
+
+```{r}
+# your code goes here
+```
+
 
 Data
 =====================================  
 
 Row {.tabset}
 -----------------------------------------------------------------------
+
+### Summary
+
+```{r}
+# your code goes here
+```
+
 
 ### Data 
 

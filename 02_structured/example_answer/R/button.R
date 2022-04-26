@@ -37,7 +37,6 @@ random_dist_server <- function(input, output, session) {
   
   random_dist <- reactiveVal(distributions[1])
   
-  
   observeEvent(input$button, {
     random_dist(sample(distributions, 1))
   })
