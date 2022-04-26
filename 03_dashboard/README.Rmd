@@ -1,0 +1,34 @@
+---
+title: "README"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, out.width = "75%")
+```
+
+This exercise is described in the flexdashboard itself. Go ahead and open `exercise.Rmd` file and press `Run document` at the top of the document. You should see a pop-up window with the flex dashboard open like below.
+
+```{r instructions}
+knitr::include_graphics("graphics/intstructions.png")
+```
+
+Go ahead and explore the dashboard. Check out the description of the penguins dataset. 
+
+```{r penguins_desc}
+knitr::include_graphics("graphics/penguins_desc.png")
+```
+
+Check out the Visuals tab. 
+
+```{r visauls}
+knitr::include_graphics("graphics/visuals.png")
+```
+
+And the Data tab.
+
+```{r}
+knitr::include_graphics("graphics/data.png")
+```
+
+Now, come back to exercise instructions and proceed with editing the exercise file. When in doubt ask or look up an example answer in `example_answered.Rmd` file. Good luck!
