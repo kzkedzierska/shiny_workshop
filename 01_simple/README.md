@@ -30,6 +30,8 @@ runExample("01_hello")
 
     ## Listening on http://127.0.0.1:XXXX
 
+<img src="graphics/01_hello.png" width="50%" />
+
 You can open it in your browser by clicking `Open in Browser` button at
 the top of the window. You can stop the app by closing the window (or
 pressing `Esc` key when in the Console).
@@ -85,10 +87,12 @@ shiny::runApp('01_simple')
 
 ## Task description
 
-Your task is to edit couple things:
+Your task is to edit couple things in the app.
 
--   add the slider or other input to include the change the control of
-    number of bins on the plot in your app.
+### Allow users to control number of bins
+
+Add the slider, or other input, to allow users to control of number of
+bins in the histogram.
 
 *Note:* The bins argument in baseR `hist` is called `breaks`.
 
@@ -99,10 +103,14 @@ hist(dist, main = "Histogram with 10 bins", breaks = 10)
 hist(dist, main = "Histogram with 50 bins", breaks = 50)
 ```
 
-<img src="README_files/figure-gfm/unnamed-chunk-14-1.png" width="60%" />
+<img src="README_files/figure-gfm/unnamed-chunk-15-1.png" width="65%" />
 
--   change the output in `Summary` tab. You want your output to be text.
-    Something along the lines of:
+### Change the output in the `Summary` tab
+
+Change the output in `Summary` tab such that instead of
+`verbatimTextOutput()` with the output of console it will be a nice
+text - either a `textOutput()` or `htmlOutput()`. Something along the
+lines of:
 
 > All observations fall within the -2.955 - 3.03 range with mean equal
 > to -0.073. Median is equal to -0.112 with 1st and 3rd quartiles at
@@ -116,7 +124,16 @@ summary_vec <- summary(dist)
 glue("All observations fall within the {summary_vec['Min.']} - {summary_vec['Max.']} range")
 ```
 
-    ## All observations fall within the -2.61955017530067 - 2.81333005757452 range
+    ## All observations fall within the -2.73609475792944 - 3.54680059507283 range
+
+You can also add native html to the text when you use `htmlOutput()`. It
+will be render similiarly as the following string by `HTML()` function.
+
+``` r
+HTML("This is <b>bold</b> and this is <mark>marked</mark>!")
+```
+
+This is <b>bold</b> and this is <mark>marked</mark>!
 
 Good luck! :)
 
