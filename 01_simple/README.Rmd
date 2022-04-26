@@ -36,13 +36,17 @@ To explore the reactivity more, try the 3rd example.
 runExample("03_reactivity")
 ```
 
+```{r, echo=FALSE, out.width="70%"}
+knitr::include_graphics("graphics/03_reactivity.png")
+```
+
 To see how we can arrange content let's explore tabsets.
 
 ```{r, eval=FALSE}
 runExample("06_tabsets")
 ```
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, out.width="70%"}
 knitr::include_graphics("graphics/06_tabsets.png")
 ```
 
@@ -51,7 +55,8 @@ And to explore how we 'stylize' the app - look at the html example.
 ```{r, eval=FALSE}
 runExample("08_html")
 ```
-```{r, echo=FALSE}
+
+```{r, echo=FALSE, out.width="70%"}
 knitr::include_graphics("graphics/08_html.png")
 ```
 
@@ -59,7 +64,7 @@ knitr::include_graphics("graphics/08_html.png")
 
 This exercise is based on tabsets example from `shiny` package. I copied the code of the app into the `app.R` file.
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, out.width="70%"}
 knitr::include_graphics("graphics/simple_app_code.png")
 ```
 
@@ -77,7 +82,7 @@ message("Listening on http://127.0.0.1:XXXX")
 ```
 
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, out.width="70%"}
 knitr::include_graphics("graphics/simple_app.png")
 ```
 
@@ -89,7 +94,7 @@ Your task is to edit couple things:
 
 *Note:* The bins argument in baseR `hist` is called `breaks`.
 
-```{r}
+```{r, fig.height=5, fig.width=10}
 dist <- rnorm(1000)
 par(mfrow = c(1,2))
 hist(dist, main = "Histogram with 10 bins", breaks = 10)
