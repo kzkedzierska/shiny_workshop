@@ -2,7 +2,7 @@
 title: "Flexdashboard exercise"
 output: 
   flexdashboard::flex_dashboard:
-    logo: figs/penguins_small.png
+    logo: graphics/penguins_small.png
     theme:
       bootswatch: minty
     orientation: rows
@@ -69,13 +69,13 @@ Read more [here](https://allisonhorst.github.io/palmerpenguins/).
 
 #### Meet the Penguins!
 
-<img src="figs/penguins.png" width="50%" alt="The Palmer Archipelago penguins. Artwork by @allison_horst.">
+<img src="graphics/penguins.png" width="50%" alt="The Palmer Archipelago penguins. Artwork by @allison_horst.">
 
 The Palmer Archipelago penguins. Artwork by @allison_horst.
 
 ### What do we measure when looking at culmen/bill?
 
-<img src="figs/culmen_depth.png" />
+<img src="graphics/culmen_depth.png" />
 
 Visuals
 =====================================  
