@@ -1,0 +1,115 @@
+---
+title: "First steps - exercise"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# First look at shiny apps
+
+In this exercise we will get more acquainted with Shiny apps. We will start by loading `shiny` package and looking at examples included in the package.
+
+```{r}
+library(shiny)
+runExample()
+```
+
+As we see there are many examples we can look at, let's start with the simplest ones. When you run the following command, the example app should open in a new window and you should see the following output.
+
+```{r eval=FALSE}
+runExample("01_hello")
+```
+
+```{r echo=FALSE}
+message("Listening on http://127.0.0.1:XXXX")
+```
+
+You can open it in your browser by clicking `Open in Browser` button at the top of the window. You can stop the app by closing the window (or pressing `Esc` key when in the Console).
+
+Now, try couple more.
+
+To explore the reactivity more, try the 3rd example.
+
+```{r, eval=FALSE}
+runExample("03_reactivity")
+```
+
+To see how we can arrange content let's explore tabsets.
+
+```{r, eval=FALSE}
+runExample("06_tabsets")
+```
+
+```{r, echo=FALSE}
+knitr::include_graphics("graphics/06_tabsets.png")
+```
+
+And to explore how we 'stylize' the app - look at the html example.
+
+```{r, eval=FALSE}
+runExample("08_html")
+```
+```{r, echo=FALSE}
+knitr::include_graphics("graphics/08_html.png")
+```
+
+# First steps in editing shiny
+
+This exercise is based on tabsets example from `shiny` package. I copied the code of the app into the `app.R` file.
+
+```{r, echo=FALSE}
+knitr::include_graphics("graphics/simple_app_code.png")
+```
+
+You can run the app by opening the app.R file and press `Run App` button in the upper right corner of your script window.
+
+It is equivalent to running `shiny::runApp("path/to/app")` in the console. Which is what RStudio will do for you.
+
+```{r, eval=FALSE}
+shiny::runApp('01_simple')
+```
+
+```{r, echo=FALSE}
+message("Loading required package: shiny")
+message("Listening on http://127.0.0.1:XXXX")
+```
+
+
+```{r, echo=FALSE}
+knitr::include_graphics("graphics/simple_app.png")
+```
+
+## Task description
+
+Your task is to edit couple things:
+
+* add the slider or other input to include the change the control of number of bins on the plot in your app. 
+
+*Note:* The bins argument in baseR `hist` is called `breaks`.
+
+```{r}
+dist <- rnorm(1000)
+par(mfrow = c(1,2))
+hist(dist, main = "Histogram with 10 bins", breaks = 10)
+hist(dist, main = "Histogram with 50 bins", breaks = 50)
+```
+
+
+
+* change the output in `Summary` tab. You want your output to be text. Something along the lines of:
+
+> All observations fall within the -2.955 - 3.03 range with mean equal to -0.073. Median is equal to -0.112 with 1st and 3rd quartiles at -0.711 and 0.606, respectively.
+
+You can create the above text with glue.
+
+```{r}
+library(glue)
+summary_vec <- summary(dist)
+glue("All observations fall within the {summary_vec['Min.']} - {summary_vec['Max.']} range")
+```
+
+Good luck! :)
+
+And remember to ask for help if you need it.

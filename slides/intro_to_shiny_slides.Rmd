@@ -109,8 +109,9 @@ class: inverse, center, middle
 
 > Shiny is an R package that makes it easy to build interactive web apps straight from R.
 
-In other words it allows us to build websites with results of our analyse without having to learn html or javascript. 
+In other words it allows us to build websites with results of our analyse without having to learn html or javascript*. 
 
+.footnote[**not entirely true as the more you work with shiny the more you will want to tweak it and use some html and/or javascript. But you don't need at the start for sure!*]
 
 
 ---

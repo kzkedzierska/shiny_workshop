@@ -20,18 +20,10 @@
     <textarea id="source">
 class: center, middle, inverse, title-slide
 
-.title[
 # Introduction to Shiny Apps
-]
-.author[
 ### Kasia Kedzierska
-]
-.institute[
 ### DPhil Candidate in Genomic Medicine and Statistics<br/>WHG, University of Oxford
-]
-.date[
-### 2022/04/22 (updated: 2022-04-25)
-]
+### 2022/04/22 (updated: 2022-04-26)
 
 ---
 
@@ -98,7 +90,11 @@ I need help, I am lost, not sure what am I supposed to do or `R` is throwing err
   * reactivity
 * Dashboards and more
 * Hands-on
-
+  * simple example
+  * more complex example
+  * structured example
+  * dashboard example
+  * app from scratch
 
 ---
 
@@ -111,8 +107,9 @@ class: inverse, center, middle
 
 &gt; Shiny is an R package that makes it easy to build interactive web apps straight from R.
 
-In other words it allows us to build websites with results of our analyse without having to learn html or javascript. 
+In other words it allows us to build websites with results of our analyse without having to learn html or javascript*. 
 
+.footnote[**not entirely true as the more you work with shiny the more you will want to tweak it and use some html and/or javascript. But you don't need at the start for sure!*]
 
 
 ---
@@ -403,19 +400,6 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
     deleted = true;
   });
 })();
-// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
-// screen reader (see PR #262)
-(function(d) {
-  let res = {};
-  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
-    const t = tr.querySelector('td:nth-child(2)').innerText;
-    tr.querySelectorAll('td:first-child .key').forEach(key => {
-      const k = key.innerText;
-      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
-    });
-  });
-  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
-})(document);
 (function() {
   "use strict"
   // Replace <script> tags in slides area to make them executable

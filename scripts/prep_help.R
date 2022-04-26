@@ -3,11 +3,13 @@
 error_count <- 0 
 
 needed_packages <-
-  c("remotes", "shiny", "shinydashboard", "flexdashboard", 
+  c("remotes", "shiny", "flexdashboard", 
     # data wrangling and plotting packages
-    "tidyverse", "patchwork", "ggsci", "glue", 
+    "tidyverse", "patchwork", "ggsci", "glue", "thematic",
     # toy datasets
-    "palmerpenguins", "ggplot2movies",
+    "palmerpenguins",
+    # presenting data interactively
+    "DT",
     # interactive plots
     "plotly")
 
