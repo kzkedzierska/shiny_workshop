@@ -39,7 +39,7 @@ random_button_ui <- function(id, label = "Regenerate") {
     
     tabsetPanel(type = "tabs",
                 tabPanel("Plot", plotOutput(ns("plot"))),
-                tabPanel("Summary", htmlOutput("summary")),
+                tabPanel("Summary", htmlOutput(ns("summary"))),
                 tabPanel("Table", tableOutput(ns("table"))))
   )
 }
@@ -53,6 +53,7 @@ random_dist_server <- function(input, output, session) {
   observeEvent(input$button, {
     
     ### your code goes here ###
+    random_dist(sample(distributions, 1))
   
     })
   

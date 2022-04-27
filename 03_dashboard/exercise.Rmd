@@ -130,7 +130,8 @@ valueBox(culmen_summary$bill_length_mm,
 ### Average culmen depth
 
 ```{r cul_depth}
-# your code goes here
+valueBox(culmen_summary$bill_depth_mm, 
+         icon = "fa-ruler")
 ```
 
 
