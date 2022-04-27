@@ -6,7 +6,7 @@ open `exercise.Rmd` file and press `Run document` at the top of the
 document. You should see a pop-up window with the flex dashboard open
 like below.
 
-<img src="graphics/intstructions.png" width="75%" />
+<img src="graphics/instructions.png" width="75%" />
 
 Go ahead and explore the dashboard. Check out the description of the
 penguins dataset.

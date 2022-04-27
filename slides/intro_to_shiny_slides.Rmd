@@ -7,10 +7,11 @@ date: "2022/04/22 (updated: `r Sys.Date()`)"
 output:
   xaringan::moon_reader:
     # css: ["xaringan-themer.css", "custom.css"]
-    css: ["xaringan-themer.css", "width.css", "misc.css"]
+    css: ["xaringan-themer.css", "width.css",]
     # yolo: true
     lib_dir: libs
     nature:
+      slideNumberFormat: ""
       highlightStyle: github
       highlightLines: true
       highlightSpans: true
@@ -23,13 +24,12 @@ style_mono_light(base_color = "#23395b")
 ```
 
 ```{r xaringanExtra, include=FALSE, echo=FALSE}
-xaringanExtra::use_fit_screen()
+# xaringanExtra::use_fit_screen()
 xaringanExtra::use_clipboard()
-
-xaringanExtra::use_progress_bar(color = "#23395b", 
-                                location = "top", height = "10px")
 xaringanExtra::use_extra_styles(hover_code_line = TRUE, 
                                 mute_unhighlighted_code = TRUE)
+xaringanExtra::use_progress_bar(color = "black", 
+                                location = "top", height = "200px")
 ```
 
 ```{r setup, include=FALSE}
@@ -46,6 +46,7 @@ I use R a lot - for data viz, data analysis, to create this slideshow, for my pe
 
 I also like questions, so please go ahead and ask me any throughout this workshop. If at any point you feel lost let me know. I also brought help with me - so there's twice as many of us to help you out. :)
 
+.footnote[This presentation and exercises will probably be riddled with typos despite my great efforts to fix them. Apologies for that, it is my ~~course~~ curse I need to live with.]
 
 ---
 
@@ -59,7 +60,7 @@ I also like questions, so please go ahead and ask me any throughout this worksho
 
 --
 
-* **Check out the other materials**. I list a lot of other resources - R community is brilliant in providing support in learning new skills and there is plenty of 
+* **Check out linked resources**. I list a lot of other materials - R community is brilliant in providing support in learning new skills and there is plenty of 
 
 ---
 
@@ -79,7 +80,7 @@ I need help, I am lost, not sure what am I supposed to do or `R` is throwing err
 
 ---
 
-# Outline
+### Outline
 
 * Shiny - introduction
   * What is shiny?
@@ -87,15 +88,18 @@ I need help, I am lost, not sure what am I supposed to do or `R` is throwing err
   * Resources
 * Anatomy of shiny apps
   * server, ui
-  * inputs, outputs
-  * layout
   * reactivity
-* Dashboards and more
-* Hands-on
-  * first steps
-  * structured example
-  * dashboard example
-  * app from scratch
+  * inputs, outputs
+  * **ex. 01_simple**
+  * layout
+  * app organisation
+  * modules
+  * **ex. 02_structured**
+* Beyond Shiny
+  * customisation, extensions
+  * Dashboards 
+  * **ex. 03_dashboard**  
+* **ex. 04_gapminder_app**
 
 ---
 class: inverse, center, middle
@@ -108,7 +112,11 @@ class: inverse, center, middle
 
 > Shiny is an R package that makes it easy to build interactive web apps straight from R.
 
-In other words it allows us to build websites with results of our analyses without having to learn html or javascript*. 
+In other words it allows us to build web apps without having to learn html or javascript*. 
+
+Shiny allows to create interactive reports, online analyses and much more.
+
+One can create a standalone apps or use shiny in R Markdown documents or build dashboards. 
 
 .footnote[**not entirely true as the more you work with shiny the more you will want to tweak it and use some html and/or javascript. But you don't need at the start for sure!*]
 
@@ -161,7 +169,7 @@ patch & theme_minimal() & theme(legend.position = "bottom",
 
 ### Palmer penguins example - app
 
-<iframe id="scaled-frame" src="https://kzkedzierska.shinyapps.io/penguin_plot_/" width=900 height=480 frameBorder="0"></iframe>
+<iframe id="scaled-frame" src="https://kzkedzierska.shinyapps.io/penguin_plot/" width=900 height=480 frameBorder="0"></iframe>
 
 ---
 ## Shiny Apps gallery
@@ -175,20 +183,18 @@ patch & theme_minimal() & theme(legend.position = "bottom",
 
 * [Mastering Shiny](https://mastering-shiny.org/) by Hadley Wickham
 * [Shiny tutorial](https://shiny.rstudio.com/tutorial/) on RStudio website
+* [Shiny Cheatsheet](https://github.com/rstudio/cheatsheets/blob/main/shiny.pdf)
 
-.pull-left.w20[
-```{r, echo=FALSE}
-knitr::include_graphics("misc/mastering_shiny_cover.png")
-```
-]
-
-.pull-right.w75[
 ```{r, echo=FALSE}
 knitr::include_app("https://shiny.rstudio.com/tutorial/written-tutorial/lesson1/",
-                   height = 250)
+                   height = 350)
 ```
-]
 
+---
+
+```{r echo=FALSE}
+knitr::include_graphics("misc/cheatsheet.png")
+```
 
 ---
 class: inverse, center, middle
@@ -316,112 +322,6 @@ shinyApp(ui, server) #<<
 ]
 ]
 
----
-## Histogram App
-
-.pull-left.w60[
-```{r eval=FALSE}
-library(shiny)
-
-ui <- fluidPage(
-  title = "Histogram App",
-  sliderInput("n", 
-              "Number of observations", 
-              value = 500,
-              min = 1, max = 10000),
-  plotOutput("hist")
-)
-
-server <- 
-  function(input, output, session) {
-    output$hist <- renderPlot({
-      nobs <- input$n
-      hist(rnorm(nobs))
-    })
-  }
-shinyApp(ui, server)
-```
-]
-
-.pull-right.w35[
-```{r echo=FALSE}
-knitr::include_graphics("misc/histogram_app.png")
-```
-]
-
----
-## Inputs
-
-.pull-left.w48[
-```{r echo=FALSE}
-knitr::include_graphics("misc/inputs_left.png")
-```
-]
-
-.pull-right.w48[
-```{r echo=FALSE}
-knitr::include_graphics("misc/inputs_right.png")
-```
-]
-
----
-## Inputs
-
-
-```{r eval=FALSE}
-library(shiny)
-
-ui <- fluidPage(
-  title = "Histogram App",
-  sliderInput("n", #<<
-              "Number of observations", #<<
-              value = 500, #<<
-              min = 1, max = 10000), #<<
-  plotOutput("hist")
-)
-
-server <- 
-  function(input, output, session) {
-    output$hist <- renderPlot({
-      nobs <- input$n #<<
-      hist(rnorm(nobs))
-    })
-  }
-shinyApp(ui, server)
-```
-
----
-## Outputs
-
-<img src="misc/outputs.png" />
-
----
-## Outputs
-
-```{r eval=FALSE}
-library(shiny)
-
-ui <- fluidPage(
-  title = "Histogram App",
-  sliderInput("n", 
-              "Number of observations", 
-              value = 500,
-              min = 1, max = 10000), 
-  plotOutput("hist") #<<
-)
-
-server <- 
-  function(input, output, session) {
-    output$hist <- renderPlot({ #<<
-      nobs <- input$n 
-      hist(rnorm(nobs)) #<<
-    }) #<<
-  }
-shinyApp(ui, server)
-```
-
----
-## Layout
 
 ---
 ## Reactive elements 
@@ -509,6 +409,382 @@ img_animated
 ```
 
 ]]
+
+---
+## Reactive elements 
+
+* `reactive()` - reactive expression, can be called by other code
+
+```{r eval=FALSE}
+d <- 
+  reactive({
+    dist <- switch(input$dist,
+                   norm = rnorm,
+                   unif = runif,
+                   lnorm = rlnorm,
+                   exp = rexp,
+                   rnorm)
+    
+    dist(input$n)
+  })
+```
+
+* `observeEvent()` - runs the code if the value changes
+* `reactiveVal*()` - allows to create reactive values which can be set, and later updated
+* `render*()` - builds an object 
+
+---
+## Reactive elements 
+
+* `reactive()` - reactive expression, can be called by other code
+* `observeEvent()` - runs the code if the value changes
+
+```{r eval=FALSE}
+observeEvent(input$button, {
+  count(count() + 1)
+})
+
+```
+
+* `reactiveVal*()` - allows to create reactive values which can be set, and later updated
+* `render*()` - builds an object 
+
+---
+## Reactive elements 
+
+* `reactive()` - reactive expression, can be called by other code
+* `observeEvent()` - runs the code if the value changes
+* `reactiveVal*()` - allows to create reactive values which can be set, and later updated
+
+```{r eval=FALSE}
+count <- reactiveVal(0)
+observeEvent(input$button, {
+  count(count() + 1)
+})
+```
+
+* `render*()` - builds an object 
+
+---
+## Reactive elements 
+
+* `reactive()` - reactive expression, can be called by other code
+* `observeEvent()` - runs the code if the value changes
+* `reactiveVal*()` - allows to create reactive values which can be set, and later updated
+* `render*()` - builds an object 
+
+```{r, eval=FALSE}
+output$plot <- renderPlot({
+  hist(d())
+})
+```
+
+
+--
+
+and more! Check out [User reactive expressions](https://shiny.rstudio.com/tutorial/written-tutorial/lesson6/) from RStudio tutorial.
+
+---
+## Histogram App
+
+.pull-left.w60[
+```{r eval=FALSE}
+library(shiny)
+
+ui <- fluidPage(
+  title = "Histogram App",
+  sliderInput(inputId = "n", 
+              label = "Number of observations", 
+              value = 500,
+              min = 1, max = 10000),
+  plotOutput(outputId = "hist")
+)
+
+server <- 
+  function(input, output, session) {
+    output$hist <- renderPlot({
+      nobs <- input$n
+      hist(rnorm(nobs))
+    })
+  }
+shinyApp(ui, server)
+```
+]
+
+.pull-right.w35[
+```{r echo=FALSE}
+knitr::include_graphics("misc/histogram_app.png")
+```
+]
+
+---
+## Inputs
+
+`input`, a **named list**, is passed to the server and it can be accessed inside server call.
+
+```{r eval=FALSE}
+library(shiny)
+
+ui <- fluidPage(
+  title = "Histogram App",
+  sliderInput(inputId = "n", #<<
+              label = "Number of observations", #<<
+              value = 500, #<<
+              min = 1, max = 10000), #<<
+  plotOutput(outputId = "hist")
+)
+
+server <- 
+  function(input, output, session) { #<<
+    output$hist <- renderPlot({
+      nobs <- input$n #<<
+      hist(rnorm(nobs))
+    })
+  }
+shinyApp(ui, server)
+```
+
+---
+## Inputs
+
+.pull-left.w48[
+```{r echo=FALSE}
+knitr::include_graphics("misc/inputs_left.png")
+```
+]
+
+.pull-right.w48[
+```{r echo=FALSE}
+knitr::include_graphics("misc/inputs_right.png")
+```
+]
+
+---
+## Outputs
+
+`output`, also a **named list**, can be accessed in `ui` using `*Output` functions and `outputId`.
+
+```{r eval=FALSE}
+library(shiny)
+
+ui <- fluidPage(
+  title = "Histogram App",
+  sliderInput(inputId = "n", 
+              label = "Number of observations", 
+              value = 500,
+              min = 1, max = 10000), 
+  plotOutput(outputId = "hist") #<<
+)
+
+server <- 
+  function(input, output, session) {
+    output$hist <- renderPlot({ #<<
+      nobs <- input$n 
+      hist(rnorm(nobs)) #<<
+    }) #<<
+  }
+shinyApp(ui, server)
+```
+
+---
+## Outputs
+
+<img src="misc/outputs.png" />
+
+---
+class: center, middle
+
+# Exercise time!
+
+---
+## 01_simple
+
+1. Go through few examples in `shiny::runExample()`
+2. Edit the app! 
+  * Allow users to control number of bins
+  * Change the output in the `Summary` tab
+  
+.pull-left.w45[
+.center[
+```{r, echo=FALSE}
+knitr::include_graphics("misc/01_github_repo.png")
+```
+]
+]
+.pull-right.w45[
+.center[
+```{r, echo=FALSE}
+knitr::include_graphics("misc/01_simple.png")
+```
+]
+]
+
+
+---
+## Layout
+
+```{r echo=FALSE}
+knitr::include_graphics("misc/layouts.png")
+```
+
+
+---
+## Shiny App directory
+
+.pull-left.w40[
+```bash
+app_name
+├── app.R
+├── DESCRIPTION # optional
+├── R/ # optional
+├── Readme.md # optional
+└── www/ # optional
+```
+]
+.pull-right.w55[
+The only required file in `app_name` directory to contain a Shiny App is the `app.r` file containing the server and ui. 
+
+The `R` directory is optional. All the `.R` scripts directly in the directory will be sourced when an app is run.
+]
+
+--
+
+To run an app one needs to provide a directory path to the directory containing `app.R` file. Shiny will then scan the directory, source files and run the app.
+
+```{r eval=FALSE}
+shiny::runApp("path/to/app_name")
+```
+
+---
+## Modules
+
+app.R
+
+```{r, eval=FALSE}
+library(shiny)
+
+ui <- fluidPage(
+  counterButton(id = "counter1", "Counter #1") #<<
+)
+
+server <- function(input, output, session) {
+  callModule(counter, id = "counter1") #<<
+}
+
+shinyApp(ui, server)
+```
+
+---
+## Modules
+
+R/counter.R
+
+```{r}
+counterButton <- function(id, label = "Counter") {
+  ns <- NS(id) #<<
+  tagList(
+    actionButton(inputId = ns("button"), #<<
+                 label = label),
+    verbatimTextOutput(outputId = ns("out")) #<<
+  )
+}
+
+counter <- function(input, output, session) {
+  count <- reactiveVal(0)
+  observeEvent(input$button, {
+    count(count() + 1)
+  })
+  output$out <- renderText({
+    count()
+  })
+  count
+}
+```
+
+---
+class: center, middle
+
+# Exercise time!
+
+---
+## 02_structured
+
+1. Follow instructions in the README file.
+2. Edit the app! 
+  * Fix the `Summary` tab
+  * Fix the button
+  
+.pull-left.w45[
+.center[
+```{r, echo=FALSE}
+knitr::include_graphics("misc/02_github_repo.png")
+```
+]
+]
+.pull-right.w45[
+.center[
+```{r, echo=FALSE, out.width="90%"}
+knitr::include_graphics("misc/02_structered.png")
+```
+]
+]
+
+---
+class: inverse, center, middle
+
+# Beyond Shiny
+
+---
+
+# Customisation
+
+One way to make Shiny App your own is to modify its look. You can do it easily with `shinythemes`. 
+
+```{r echo=FALSE}
+knitr::include_app("https://rstudio.github.io/shinythemes/", height = "355px")
+```
+
+.footnote[[`shinythemes` documentation and tutorial](https://rstudio.github.io/shinythemes/)]
+
+---
+
+# Extensions
+
+There are plenty of packages allowing to extend the shiny app beyond static figures.
+
+.pull-left.w45[
+.center[
+
+[`dygraphs`](https://rstudio.github.io/dygraphs/)
+```{r echo=FALSE}
+library(dygraphs)
+lungDeaths <- cbind(mdeaths, fdeaths)
+dygraph(lungDeaths, width = "300px", height = "250px")
+```
+]
+]
+
+.pull-right.w45[
+.center[
+
+[`leaflet`](https://rstudio.github.io/dygraphs/)
+
+```{r echo=FALSE}
+library(leaflet)
+
+m <- 
+  leaflet(width = "300px", height = "300px") %>%
+  addTiles() %>%  # Add default OpenStreetMap map tiles
+  addMarkers(lng = 174.768, lat = -36.852, popup = "The birthplace of R")
+m  # Print the map
+```
+
+]
+]
+
+
+.footnote[Read more about htmlwidgets [here](https://shiny.rstudio.com/articles/htmlwidgets.html).]
+
 
 ---
 class: inverse, center, middle
@@ -601,7 +877,6 @@ knitr::include_graphics("misc/shinydashboard.png")
 ```
 ]
 
-
 ---
 
 ## [Flexdashboard](https://pkgs.rstudio.com/flexdashboard/index.html)
@@ -616,21 +891,60 @@ You can find more examples [here](https://pkgs.rstudio.com/flexdashboard/article
 ]
 
 ---
-class: inverse, center, middle
+class: center, middle
 
-# Exercises  
+# Exercise time!
 
 ---
-# Hands on exercises
+## 03_dashboard
 
-In this repo there are 4 exercises:
 
-* 01_simple
-* 02_structured
-* 03_dashboard
-* 04_app_from_scratch
+1. Follow instructions in the README file.
+2. Edit the dashboard! 
+  * add `culmen depth` to the visual boxes in Visuals tab;
+  * add the histogram of numeric variables to the Visuals tab;
+  * and add the summary table in the Data tab.
+  
+.pull-left.w45[
+.center[
+```{r, echo=FALSE}
+knitr::include_graphics("misc/03_github_repo.png")
+```
+]
+]
+.pull-right.w45[
+.center[
+```{r, echo=FALSE}
+knitr::include_graphics("misc/03_instructions.png")
+```
+]
+]
 
-Each exercise is placed in sepearate directory with instructions in README files and 
+
+---
+## 04_gapminder_app
+
+Pick your poison: shiny or flexdashboard? Create your own application that would allow the user to explore and get familiar with the gapminder dataset.
+
+Look for instructions, tips and inspiration in the README file.
+
+.pull-left.w45[
+.center[
+```{r, echo=FALSE}
+knitr::include_graphics("misc/04_github_repo.png")
+```
+]
+]
+.pull-right.w45[
+.center[
+```{r, echo=FALSE,}
+knitr::include_graphics("misc/04_bubbles.png")
+```
+]
+]
+
+
+
 ---
 class: inverse, center, middle
 

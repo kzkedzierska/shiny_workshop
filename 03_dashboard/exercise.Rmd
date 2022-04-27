@@ -45,7 +45,7 @@ Row
 Your task is to add elements to this dashboard:
 
 * add `culmen depth` to the visual boxes in [Visuals](#visuals) tab;
-* add the histogram of numeric variabls to the [Visuals](#visuals) tab;
+* add the histogram of numeric variables to the [Visuals](#visuals) tab;
 * and add the summary table in the [Data](#data) tab.
 
 Good luck! And remember, you can always look into example_answered to get inspired, but try to figure this out by yourself! And we are around to help you out.

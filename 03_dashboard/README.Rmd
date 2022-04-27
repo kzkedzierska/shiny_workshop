@@ -10,7 +10,7 @@ knitr::opts_chunk$set(echo = FALSE, out.width = "75%")
 This exercise is described in the flexdashboard itself. Go ahead and open `exercise.Rmd` file and press `Run document` at the top of the document. You should see a pop-up window with the flex dashboard open like below.
 
 ```{r instructions}
-knitr::include_graphics("graphics/intstructions.png")
+knitr::include_graphics("graphics/instructions.png")
 ```
 
 Go ahead and explore the dashboard. Check out the description of the penguins dataset. 

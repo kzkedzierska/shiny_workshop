@@ -5,16 +5,30 @@
     <meta charset="utf-8" />
     <meta name="author" content="Kasia Kedzierska" />
     <script src="libs/header-attrs/header-attrs.js"></script>
-    <script src="libs/xaringanExtra_fit-screen/fit-screen.js"></script>
     <script src="libs/clipboard/clipboard.min.js"></script>
     <link href="libs/xaringanExtra-clipboard/xaringanExtra-clipboard.css" rel="stylesheet" />
     <script src="libs/xaringanExtra-clipboard/xaringanExtra-clipboard.js"></script>
     <script>window.xaringanExtraClipboard(null, {"button":"Copy Code","success":"Copied!","error":"Press Ctrl+C to Copy"})</script>
-    <script src="libs/xaringanExtra-progressBar/progress-bar.js"></script>
     <link href="libs/xaringanExtra-extra-styles/xaringanExtra-extra-styles.css" rel="stylesheet" />
+    <script src="libs/xaringanExtra-progressBar/progress-bar.js"></script>
+    <script src="libs/htmlwidgets/htmlwidgets.js"></script>
+    <script src="libs/jquery/jquery.min.js"></script>
+    <link href="libs/dygraphs/dygraph.css" rel="stylesheet" />
+    <script src="libs/dygraphs/dygraph-combined.js"></script>
+    <script src="libs/dygraphs/shapes.js"></script>
+    <script src="libs/moment/moment.js"></script>
+    <script src="libs/moment-timezone/moment-timezone-with-data.js"></script>
+    <script src="libs/moment-fquarter/moment-fquarter.min.js"></script>
+    <script src="libs/dygraphs-binding/dygraphs.js"></script>
+    <link href="libs/leaflet/leaflet.css" rel="stylesheet" />
+    <script src="libs/leaflet/leaflet.js"></script>
+    <link href="libs/leafletfix/leafletfix.css" rel="stylesheet" />
+    <script src="libs/proj4/proj4.min.js"></script>
+    <script src="libs/Proj4Leaflet/proj4leaflet.js"></script>
+    <link href="libs/rstudio_leaflet/rstudio_leaflet.css" rel="stylesheet" />
+    <script src="libs/leaflet-binding/leaflet.js"></script>
     <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
     <link rel="stylesheet" href="width.css" type="text/css" />
-    <link rel="stylesheet" href="misc.css" type="text/css" />
   </head>
   <body>
     <textarea id="source">
@@ -30,7 +44,7 @@ class: center, middle, inverse, title-slide
 ### DPhil Candidate in Genomic Medicine and Statistics<br/>WHG, University of Oxford
 ]
 .date[
-### 2022/04/22 (updated: 2022-04-26)
+### 2022/04/22 (updated: 2022-04-27)
 ]
 
 ---
@@ -52,6 +66,7 @@ I use R a lot - for data viz, data analysis, to create this slideshow, for my pe
 
 I also like questions, so please go ahead and ask me any throughout this workshop. If at any point you feel lost let me know. I also brought help with me - so there's twice as many of us to help you out. :)
 
+.footnote[This presentation and exercises will probably be riddled with typos despite my great efforts to fix them. Apologies for that, it is my ~~course~~ curse I need to live with.]
 
 ---
 
@@ -65,7 +80,7 @@ I also like questions, so please go ahead and ask me any throughout this worksho
 
 --
 
-* **Check out the other materials**. I list a lot of other resources - R community is brilliant in providing support in learning new skills and there is plenty of 
+* **Check out linked resources**. I list a lot of other materials - R community is brilliant in providing support in learning new skills and there is plenty of 
 
 ---
 
@@ -85,7 +100,7 @@ I need help, I am lost, not sure what am I supposed to do or `R` is throwing err
 
 ---
 
-# Outline
+### Outline
 
 * Shiny - introduction
   * What is shiny?
@@ -93,15 +108,18 @@ I need help, I am lost, not sure what am I supposed to do or `R` is throwing err
   * Resources
 * Anatomy of shiny apps
   * server, ui
-  * inputs, outputs
-  * layout
   * reactivity
-* Dashboards and more
-* Hands-on
-  * first steps
-  * structured example
-  * dashboard example
-  * app from scratch
+  * inputs, outputs
+  * **ex. 01_simple**
+  * layout
+  * app organisation
+  * modules
+  * **ex. 02_structured**
+* Beyond Shiny
+  * customisation, extensions
+  * Dashboards 
+  * **ex. 03_dashboard**  
+* **ex. 04_gapminder_app**
 
 ---
 class: inverse, center, middle
@@ -114,7 +132,11 @@ class: inverse, center, middle
 
 &gt; Shiny is an R package that makes it easy to build interactive web apps straight from R.
 
-In other words it allows us to build websites with results of our analyses without having to learn html or javascript*. 
+In other words it allows us to build web apps without having to learn html or javascript*. 
+
+Shiny allows to create interactive reports, online analyses and much more.
+
+One can create a standalone apps or use shiny in R Markdown documents or build dashboards. 
 
 .footnote[**not entirely true as the more you work with shiny the more you will want to tweak it and use some html and/or javascript. But you don't need at the start for sure!*]
 
@@ -130,7 +152,7 @@ In other words it allows us to build websites with results of our analyses witho
 
 ### Palmer penguins example - app
 
-&lt;iframe id="scaled-frame" src="https://kzkedzierska.shinyapps.io/penguin_plot_/" width=900 height=480 frameBorder="0"&gt;&lt;/iframe&gt;
+&lt;iframe id="scaled-frame" src="https://kzkedzierska.shinyapps.io/penguin_plot/" width=900 height=480 frameBorder="0"&gt;&lt;/iframe&gt;
 
 ---
 ## Shiny Apps gallery
@@ -144,15 +166,13 @@ In other words it allows us to build websites with results of our analyses witho
 
 * [Mastering Shiny](https://mastering-shiny.org/) by Hadley Wickham
 * [Shiny tutorial](https://shiny.rstudio.com/tutorial/) on RStudio website
+* [Shiny Cheatsheet](https://github.com/rstudio/cheatsheets/blob/main/shiny.pdf)
 
-.pull-left.w20[
-&lt;img src="misc/mastering_shiny_cover.png" width="667" /&gt;
-]
+&lt;iframe src="https://shiny.rstudio.com/tutorial/written-tutorial/lesson1/?showcase=0" width="100%" height="350" data-external="1"&gt;&lt;/iframe&gt;
 
-.pull-right.w75[
-&lt;iframe src="https://shiny.rstudio.com/tutorial/written-tutorial/lesson1/?showcase=0" width="100%" height="250" data-external="1"&gt;&lt;/iframe&gt;
-]
+---
 
+&lt;img src="misc/cheatsheet.png" width="1612" /&gt;
 
 ---
 class: inverse, center, middle
@@ -284,109 +304,6 @@ server &lt;-
 ]
 ]
 
----
-## Histogram App
-
-.pull-left.w60[
-
-```r
-library(shiny)
-
-ui &lt;- fluidPage(
-  title = "Histogram App",
-  sliderInput("n", 
-              "Number of observations", 
-              value = 500,
-              min = 1, max = 10000),
-  plotOutput("hist")
-)
-
-server &lt;- 
-  function(input, output, session) {
-    output$hist &lt;- renderPlot({
-      nobs &lt;- input$n
-      hist(rnorm(nobs))
-    })
-  }
-shinyApp(ui, server)
-```
-]
-
-.pull-right.w35[
-&lt;img src="misc/histogram_app.png" width="819" /&gt;
-]
-
----
-## Inputs
-
-.pull-left.w48[
-&lt;img src="misc/inputs_left.png" width="1056" /&gt;
-]
-
-.pull-right.w48[
-&lt;img src="misc/inputs_right.png" width="1105" /&gt;
-]
-
----
-## Inputs
-
-
-
-```r
-library(shiny)
-
-ui &lt;- fluidPage(
-  title = "Histogram App",
-* sliderInput("n",
-*             "Number of observations",
-*             value = 500,
-*             min = 1, max = 10000),
-  plotOutput("hist")
-)
-
-server &lt;- 
-  function(input, output, session) {
-    output$hist &lt;- renderPlot({
-*     nobs &lt;- input$n
-      hist(rnorm(nobs))
-    })
-  }
-shinyApp(ui, server)
-```
-
----
-## Outputs
-
-&lt;img src="misc/outputs.png" /&gt;
-
----
-## Outputs
-
-
-```r
-library(shiny)
-
-ui &lt;- fluidPage(
-  title = "Histogram App",
-  sliderInput("n", 
-              "Number of observations", 
-              value = 500,
-              min = 1, max = 10000), 
-* plotOutput("hist")
-)
-
-server &lt;- 
-  function(input, output, session) {
-*   output$hist &lt;- renderPlot({
-      nobs &lt;- input$n 
-*     hist(rnorm(nobs))
-*   })
-  }
-shinyApp(ui, server)
-```
-
----
-## Layout
 
 ---
 ## Reactive elements 
@@ -434,6 +351,363 @@ And in the UI this is what user will see depending chosen option:
 ![](intro_to_shiny_slides_files/figure-html/reatcive_gif-1.gif)&lt;!-- --&gt;
 
 ]]
+
+---
+## Reactive elements 
+
+* `reactive()` - reactive expression, can be called by other code
+
+
+```r
+d &lt;- 
+  reactive({
+    dist &lt;- switch(input$dist,
+                   norm = rnorm,
+                   unif = runif,
+                   lnorm = rlnorm,
+                   exp = rexp,
+                   rnorm)
+    
+    dist(input$n)
+  })
+```
+
+* `observeEvent()` - runs the code if the value changes
+* `reactiveVal*()` - allows to create reactive values which can be set, and later updated
+* `render*()` - builds an object 
+
+---
+## Reactive elements 
+
+* `reactive()` - reactive expression, can be called by other code
+* `observeEvent()` - runs the code if the value changes
+
+
+```r
+observeEvent(input$button, {
+  count(count() + 1)
+})
+```
+
+* `reactiveVal*()` - allows to create reactive values which can be set, and later updated
+* `render*()` - builds an object 
+
+---
+## Reactive elements 
+
+* `reactive()` - reactive expression, can be called by other code
+* `observeEvent()` - runs the code if the value changes
+* `reactiveVal*()` - allows to create reactive values which can be set, and later updated
+
+
+```r
+count &lt;- reactiveVal(0)
+observeEvent(input$button, {
+  count(count() + 1)
+})
+```
+
+* `render*()` - builds an object 
+
+---
+## Reactive elements 
+
+* `reactive()` - reactive expression, can be called by other code
+* `observeEvent()` - runs the code if the value changes
+* `reactiveVal*()` - allows to create reactive values which can be set, and later updated
+* `render*()` - builds an object 
+
+
+```r
+output$plot &lt;- renderPlot({
+  hist(d())
+})
+```
+
+
+--
+
+and more! Check out [User reactive expressions](https://shiny.rstudio.com/tutorial/written-tutorial/lesson6/) from RStudio tutorial.
+
+---
+## Histogram App
+
+.pull-left.w60[
+
+```r
+library(shiny)
+
+ui &lt;- fluidPage(
+  title = "Histogram App",
+  sliderInput(inputId = "n", 
+              label = "Number of observations", 
+              value = 500,
+              min = 1, max = 10000),
+  plotOutput(outputId = "hist")
+)
+
+server &lt;- 
+  function(input, output, session) {
+    output$hist &lt;- renderPlot({
+      nobs &lt;- input$n
+      hist(rnorm(nobs))
+    })
+  }
+shinyApp(ui, server)
+```
+]
+
+.pull-right.w35[
+&lt;img src="misc/histogram_app.png" width="819" /&gt;
+]
+
+---
+## Inputs
+
+`input`, a **named list**, is passed to the server and it can be accessed inside server call.
+
+
+```r
+library(shiny)
+
+ui &lt;- fluidPage(
+  title = "Histogram App",
+* sliderInput(inputId = "n",
+*             label = "Number of observations",
+*             value = 500,
+*             min = 1, max = 10000),
+  plotOutput(outputId = "hist")
+)
+
+server &lt;- 
+* function(input, output, session) {
+    output$hist &lt;- renderPlot({
+*     nobs &lt;- input$n
+      hist(rnorm(nobs))
+    })
+  }
+shinyApp(ui, server)
+```
+
+---
+## Inputs
+
+.pull-left.w48[
+&lt;img src="misc/inputs_left.png" width="1056" /&gt;
+]
+
+.pull-right.w48[
+&lt;img src="misc/inputs_right.png" width="1105" /&gt;
+]
+
+---
+## Outputs
+
+`output`, also a **named list**, can be accessed in `ui` using `*Output` functions and `outputId`.
+
+
+```r
+library(shiny)
+
+ui &lt;- fluidPage(
+  title = "Histogram App",
+  sliderInput(inputId = "n", 
+              label = "Number of observations", 
+              value = 500,
+              min = 1, max = 10000), 
+* plotOutput(outputId = "hist")
+)
+
+server &lt;- 
+  function(input, output, session) {
+*   output$hist &lt;- renderPlot({
+      nobs &lt;- input$n 
+*     hist(rnorm(nobs))
+*   })
+  }
+shinyApp(ui, server)
+```
+
+---
+## Outputs
+
+&lt;img src="misc/outputs.png" /&gt;
+
+---
+class: center, middle
+
+# Exercise time!
+
+---
+## 01_simple
+
+1. Go through few examples in `shiny::runExample()`
+2. Edit the app! 
+  * Allow users to control number of bins
+  * Change the output in the `Summary` tab
+  
+.pull-left.w45[
+.center[
+&lt;img src="misc/01_github_repo.png" width="1241" /&gt;
+]
+]
+.pull-right.w45[
+.center[
+&lt;img src="misc/01_simple.png" width="1249" /&gt;
+]
+]
+
+
+---
+## Layout
+
+&lt;img src="misc/layouts.png" width="1565" /&gt;
+
+
+---
+## Shiny App directory
+
+.pull-left.w40[
+```bash
+app_name
+├── app.R
+├── DESCRIPTION # optional
+├── R/ # optional
+├── Readme.md # optional
+└── www/ # optional
+```
+]
+.pull-right.w55[
+The only required file in `app_name` directory to contain a Shiny App is the `app.r` file containing the server and ui. 
+
+The `R` directory is optional. All the `.R` scripts directly in the directory will be sourced when an app is run.
+]
+
+--
+
+To run an app one needs to provide a directory path to the directory containing `app.R` file. Shiny will then scan the directory, source files and run the app.
+
+
+```r
+shiny::runApp("path/to/app_name")
+```
+
+---
+## Modules
+
+app.R
+
+
+```r
+library(shiny)
+
+ui &lt;- fluidPage(
+* counterButton(id = "counter1", "Counter #1")
+)
+
+server &lt;- function(input, output, session) {
+* callModule(counter, id = "counter1")
+}
+
+shinyApp(ui, server)
+```
+
+---
+## Modules
+
+R/counter.R
+
+
+```r
+counterButton &lt;- function(id, label = "Counter") {
+* ns &lt;- NS(id)
+  tagList(
+*   actionButton(inputId = ns("button"),
+                 label = label),
+*   verbatimTextOutput(outputId = ns("out"))
+  )
+}
+
+counter &lt;- function(input, output, session) {
+  count &lt;- reactiveVal(0)
+  observeEvent(input$button, {
+    count(count() + 1)
+  })
+  output$out &lt;- renderText({
+    count()
+  })
+  count
+}
+```
+
+---
+class: center, middle
+
+# Exercise time!
+
+---
+## 02_structured
+
+1. Follow instructions in the README file.
+2. Edit the app! 
+  * Fix the `Summary` tab
+  * Fix the button
+  
+.pull-left.w45[
+.center[
+&lt;img src="misc/02_github_repo.png" width="1203" /&gt;
+]
+]
+.pull-right.w45[
+.center[
+&lt;img src="misc/02_structered.png" width="90%" /&gt;
+]
+]
+
+---
+class: inverse, center, middle
+
+# Beyond Shiny
+
+---
+
+# Customisation
+
+One way to make Shiny App your own is to modify its look. You can do it easily with `shinythemes`. 
+
+&lt;iframe src="https://rstudio.github.io/shinythemes/?showcase=0" width="100%" height="355px" data-external="1"&gt;&lt;/iframe&gt;
+
+.footnote[[`shinythemes` documentation and tutorial](https://rstudio.github.io/shinythemes/)]
+
+---
+
+# Extensions
+
+There are plenty of packages allowing to extend the shiny app beyond static figures.
+
+.pull-left.w45[
+.center[
+
+[`dygraphs`](https://rstudio.github.io/dygraphs/)
+<div id="htmlwidget-bbb7c381df451cdb9480" style="width:300px;height:250px;" class="dygraphs html-widget"></div>
+<script type="application/json" data-for="htmlwidget-bbb7c381df451cdb9480">{"x":{"attrs":{"labels":["month","mdeaths","fdeaths"],"legend":"auto","retainDateWindow":false,"axes":{"x":{"pixelsPerLabel":60}}},"scale":"monthly","annotations":[],"shadings":[],"events":[],"format":"date","data":[["1974-01-01T00:00:00.000Z","1974-02-01T00:00:00.000Z","1974-03-01T00:00:00.000Z","1974-04-01T00:00:00.000Z","1974-05-01T00:00:00.000Z","1974-06-01T00:00:00.000Z","1974-07-01T00:00:00.000Z","1974-08-01T00:00:00.000Z","1974-09-01T00:00:00.000Z","1974-10-01T00:00:00.000Z","1974-11-01T00:00:00.000Z","1974-12-01T00:00:00.000Z","1975-01-01T00:00:00.000Z","1975-02-01T00:00:00.000Z","1975-03-01T00:00:00.000Z","1975-04-01T00:00:00.000Z","1975-05-01T00:00:00.000Z","1975-06-01T00:00:00.000Z","1975-07-01T00:00:00.000Z","1975-08-01T00:00:00.000Z","1975-09-01T00:00:00.000Z","1975-10-01T00:00:00.000Z","1975-11-01T00:00:00.000Z","1975-12-01T00:00:00.000Z","1976-01-01T00:00:00.000Z","1976-02-01T00:00:00.000Z","1976-03-01T00:00:00.000Z","1976-04-01T00:00:00.000Z","1976-05-01T00:00:00.000Z","1976-06-01T00:00:00.000Z","1976-07-01T00:00:00.000Z","1976-08-01T00:00:00.000Z","1976-09-01T00:00:00.000Z","1976-10-01T00:00:00.000Z","1976-11-01T00:00:00.000Z","1976-12-01T00:00:00.000Z","1977-01-01T00:00:00.000Z","1977-02-01T00:00:00.000Z","1977-03-01T00:00:00.000Z","1977-04-01T00:00:00.000Z","1977-05-01T00:00:00.000Z","1977-06-01T00:00:00.000Z","1977-07-01T00:00:00.000Z","1977-08-01T00:00:00.000Z","1977-09-01T00:00:00.000Z","1977-10-01T00:00:00.000Z","1977-11-01T00:00:00.000Z","1977-12-01T00:00:00.000Z","1978-01-01T00:00:00.000Z","1978-02-01T00:00:00.000Z","1978-03-01T00:00:00.000Z","1978-04-01T00:00:00.000Z","1978-05-01T00:00:00.000Z","1978-06-01T00:00:00.000Z","1978-07-01T00:00:00.000Z","1978-08-01T00:00:00.000Z","1978-09-01T00:00:00.000Z","1978-10-01T00:00:00.000Z","1978-11-01T00:00:00.000Z","1978-12-01T00:00:00.000Z","1979-01-01T00:00:00.000Z","1979-02-01T00:00:00.000Z","1979-03-01T00:00:00.000Z","1979-04-01T00:00:00.000Z","1979-05-01T00:00:00.000Z","1979-06-01T00:00:00.000Z","1979-07-01T00:00:00.000Z","1979-08-01T00:00:00.000Z","1979-09-01T00:00:00.000Z","1979-10-01T00:00:00.000Z","1979-11-01T00:00:00.000Z","1979-12-01T00:00:00.000Z"],[2134,1863,1877,1877,1492,1249,1280,1131,1209,1492,1621,1846,2103,2137,2153,1833,1403,1288,1186,1133,1053,1347,1545,2066,2020,2750,2283,1479,1189,1160,1113,970,999,1208,1467,2059,2240,1634,1722,1801,1246,1162,1087,1013,959,1179,1229,1655,2019,2284,1942,1423,1340,1187,1098,1004,970,1140,1110,1812,2263,1820,1846,1531,1215,1075,1056,975,940,1081,1294,1341],[901,689,827,677,522,406,441,393,387,582,578,666,830,752,785,664,467,438,421,412,343,440,531,771,767,1141,896,532,447,420,376,330,357,445,546,764,862,660,663,643,502,392,411,348,387,385,411,638,796,853,737,546,530,446,431,362,387,430,425,679,821,785,727,612,478,429,405,379,393,411,487,574]]},"evals":[],"jsHooks":[]}</script>
+]
+]
+
+.pull-right.w45[
+.center[
+
+[`leaflet`](https://rstudio.github.io/dygraphs/)
+
+<div id="htmlwidget-7c11da125a11d5618849" style="width:300px;height:300px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-7c11da125a11d5618849">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"https://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addMarkers","args":[-36.852,174.768,null,null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},"The birthplace of R",null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[-36.852,-36.852],"lng":[174.768,174.768]}},"evals":[],"jsHooks":[]}</script>
+
+]
+]
+
+
+.footnote[Read more about htmlwidgets [here](https://shiny.rstudio.com/articles/htmlwidgets.html).]
+
 
 ---
 class: inverse, center, middle
@@ -524,7 +798,6 @@ shinyApp(ui, server)
 &lt;img src="misc/shinydashboard.png" width="1344" /&gt;
 ]
 
-
 ---
 
 ## [Flexdashboard](https://pkgs.rstudio.com/flexdashboard/index.html)
@@ -537,21 +810,52 @@ You can find more examples [here](https://pkgs.rstudio.com/flexdashboard/article
 ]
 
 ---
-class: inverse, center, middle
+class: center, middle
 
-# Exercises  
+# Exercise time!
 
 ---
-# Hands on exercises
+## 03_dashboard
 
-In this repo there are 4 exercises:
 
-* 01_simple
-* 02_structured
-* 03_dashboard
-* 04_app_from_scratch
+1. Follow instructions in the README file.
+2. Edit the dashboard! 
+  * add `culmen depth` to the visual boxes in Visuals tab;
+  * add the histogram of numeric variables to the Visuals tab;
+  * and add the summary table in the Data tab.
+  
+.pull-left.w45[
+.center[
+&lt;img src="misc/03_github_repo.png" width="1439" /&gt;
+]
+]
+.pull-right.w45[
+.center[
+&lt;img src="misc/03_instructions.png" width="1440" /&gt;
+]
+]
 
-Each exercise is placed in sepearate directory with instructions in README files and 
+
+---
+## 04_gapminder_app
+
+Pick your poison: shiny or flexdashboard? Create your own application that would allow the user to explore and get familiar with the gapminder dataset.
+
+Look for instructions, tips and inspiration in the README file.
+
+.pull-left.w45[
+.center[
+&lt;img src="misc/04_github_repo.png" width="1439" /&gt;
+]
+]
+.pull-right.w45[
+.center[
+&lt;img src="misc/04_bubbles.png" width="896" /&gt;
+]
+]
+
+
+
 ---
 class: inverse, center, middle
 
@@ -595,6 +899,7 @@ Early Bird: &lt;b&gt;11.07&lt;/b&gt; &lt;/td&gt;
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
 <script>var slideshow = remark.create({
+"slideNumberFormat": "",
 "highlightStyle": "github",
 "highlightLines": true,
 "highlightSpans": true,
